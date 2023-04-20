@@ -1,5 +1,0 @@
-To add notifications?
-
-profile: firstname, lastname, postcode to check distance to activity
-
-for event: Participating users / rating / Join / Age restrictionWS
