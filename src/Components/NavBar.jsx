@@ -1,7 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { UserAuth } from "../Auth/AuthContext";
 
 const NavBar = () => {
+  const { logout } = UserAuth();
+  const navigate = useNavigate();
+  const handleLogOut = async () => {
+    try {
+      await logout();
+      navigate("/signin");
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
   return (
     <section>
       {/* Hamburger menu for mobile*/}
@@ -34,8 +45,8 @@ const NavBar = () => {
         aria-label="Sidebar"
       >
         <div className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-          <a
-            href="#"
+          <NavLink
+            to="#"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -49,9 +60,9 @@ const NavBar = () => {
               <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
             </svg>
             <span className="ml-3">Dashboard</span>
-          </a>
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="#"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -68,10 +79,10 @@ const NavBar = () => {
             <span className="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
               3
             </span>
-          </a>
+          </NavLink>
 
-          <a
-            href="#"
+          <NavLink
+            to="#"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -89,10 +100,9 @@ const NavBar = () => {
               <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z"></path>
             </svg>
             <span className="flex-1 ml-3 whitespace-nowrap">Buddies</span>
-          </a>
-
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="#"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -110,53 +120,33 @@ const NavBar = () => {
               ></path>
             </svg>
 
-            <span className="flex-1 ml-3 whitespace-nowrap">Events</span>
-          </a>
+            <span className="flex-1 ml-3 whitespace-nowrap">Activities</span>
+          </NavLink>
           <span className="grow"></span>
-          <NavLink
-            to="/logout"
+          <button
+            type="button"
+            onClick={handleLogOut}
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
-              viewBox="0 0 1024.00 1024.00"
-              className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-              version="1.1"
               xmlns="http://www.w3.org/2000/svg"
-              fill="#000000"
+              width="20"
+              height="20"
+              fill="currentColor"
+              className="bi bi-box-arrow-right"
+              viewBox="0 0 16 16"
             >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                {" "}
-                <path
-                  d="M21 12L13 12"
-                  stroke="#323232"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-                <path
-                  d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9"
-                  stroke="#323232"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-                <path
-                  d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19"
-                  stroke="#323232"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>{" "}
-              </g>
+              <path
+                fillRule="evenodd"
+                d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"
+              />
+              <path
+                fillRule="evenodd"
+                d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
+              />
             </svg>
-            <span className="flex-1 ml-3 whitespace-nowrap">Logout</span>
-          </NavLink>
+            <span className="ml-3 whitespace-nowrap">Logout</span>
+          </button>
         </div>
       </aside>
 

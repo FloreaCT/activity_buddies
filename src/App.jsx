@@ -1,17 +1,27 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
-import "./index.css";
+import { AuthContextProvider } from "./Auth/AuthContext";
+import SignIn from "./Components/Signin";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element="" />
-        <Route path="*" element={<div>Page not found!</div>} />
-      </Routes>
+      <AuthContextProvider>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <NavBar />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/signin" element={<SignIn />} />
+        </Routes>
+      </AuthContextProvider>
     </Router>
   );
-}
+};
 
 export default App;
