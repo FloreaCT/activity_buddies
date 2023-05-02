@@ -3,6 +3,7 @@ import NavBar from "./Components/NavBar";
 import { AuthContextProvider } from "./Auth/AuthContext";
 import SignIn from "./Components/Signin";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import "./index.css";
 
 const App = () => {
   return (
