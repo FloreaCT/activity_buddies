@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { UserAuth } from "../Auth/AuthContext";
 import { useNavigate } from "react-router";
 import { sendEmailVerification } from "@firebase/auth";
-import { getFirestore, collection, addDoc, getDoc } from "firebase/firestore";
+
 import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
@@ -28,6 +28,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (theUser) {
+      console.log(theUser);
       navigate("/");
     } else {
       initFlowbite();
@@ -51,12 +52,6 @@ const SignIn = () => {
     try {
       const newUser = await createUser(email, password);
       if (newUser) {
-        // await addDoc(collection(db, users), {
-        //   uid: user.uid,
-        //   displayName: "Sandrita",
-        //   authProvider: "local",
-        //   email: email,
-        // });
         sendEmailVerification(newUser.user);
         const sign = await signIn(email, password);
         console.log(sign);
