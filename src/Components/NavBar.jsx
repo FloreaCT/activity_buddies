@@ -5,7 +5,6 @@ import { UserAuth } from "../Auth/AuthContext";
 const NavBar = () => {
   const { logout, user } = UserAuth();
   const navigate = useNavigate();
-  console.log(user);
   const handleLogOut = async () => {
     try {
       await logout();
@@ -105,7 +104,7 @@ const NavBar = () => {
           </NavLink>
 
           <NavLink
-            to="#"
+            to="buddies"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
@@ -125,7 +124,7 @@ const NavBar = () => {
             <span className="flex-1 ml-3 whitespace-nowrap">Buddies</span>
           </NavLink>
           <NavLink
-            to="activities"
+            to="/activities/search-activities"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg

@@ -1,7 +1,7 @@
 import React from "react";
 import Profile from "./Profile";
 import { Route, Routes } from "react-router";
-import Activities from "./Activities/MyActivities";
+import ActivityHeader from "./Activities/ActivityHeader";
 
 const Main = () => {
   return (
@@ -9,7 +9,7 @@ const Main = () => {
       <div className="p-4">
         <Routes>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/activities*" element={<Activities />} />
+          <Route path="/activities/*" element={<ActivityHeader />} />
         </Routes>
       </div>
     </div>
