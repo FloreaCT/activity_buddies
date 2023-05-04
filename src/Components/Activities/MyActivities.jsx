@@ -33,7 +33,7 @@ const MyActivities = () => {
               </div>
               <span className="justify-items-auto"></span>
               <div className="mt-4">
-                <text className="font-bold">Event will take place at on: </text>
+                <p className="font-bold">Event will take place at on: </p>
                 <div>27 March at 21:00</div>
                 <div className="mt-4">
                   <span className="font-bold">Location: </span>
