@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserAuth } from "../Auth/AuthContext";
 import { useNavigate } from "react-router";
-import { sendEmailVerification } from "@firebase/auth";
+
 
 import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
@@ -23,8 +23,9 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [theUser, setTheUser] = useState(null);
-  const navigate = useNavigate();
   const { createUser, signIn, googleSignIn, user } = UserAuth();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (theUser) {
@@ -39,7 +40,6 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn();
-      console.log("signed in");
       navigate("/");
     } catch (e) {
       console.log(e.message);
@@ -51,10 +51,9 @@ const SignIn = () => {
     try {
       const newUser = await createUser(email, password);
       if (newUser) {
-        sendEmailVerification(newUser.user);
         const sign = await signIn(email, password);
         console.log(sign);
-        navigate("/");
+        navigate("activities/my-activities");
       }
     } catch (e) {
       setError(e.message);

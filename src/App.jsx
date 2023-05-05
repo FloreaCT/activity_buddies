@@ -21,7 +21,6 @@ const App = () => {
             }
           />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="*" element={<div>Nothing here to see</div>} />
         </Routes>
       </AuthContextProvider>
     </Router>
