@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { css } from "@emotion/css";
 import { retrieveProfile } from "./ProfileService";
-import { UserAuth } from "../../Auth/AuthContext";
 
 const formStyles = css`
   form {
@@ -82,12 +81,9 @@ const Profile = () => {
     uuid: 0,
   });
 
-  const { user } = UserAuth();
-
   useEffect(() => {
     (async () => {
       try {
-        console.log(user.uid);
         const oldProfile = await retrieveProfile();
         const newProfile = oldProfile.data();
         setUserProfile((userProfile) => ({
@@ -114,13 +110,17 @@ const Profile = () => {
     // }));
   };
 
+  const handleModalClose = () => {
+    setShow(false);
+  };
+
   return (
     <div className="flex flex-row space-x-4">
       <div className="m-auto border-2 text-center rounded-md max-w-lg pb-10">
         <div className="h-20 w-20 m-auto">
           <img src="../public/img/profile-picture.jpg" />
         </div>
-        <div>Constantin Florea</div>
+        <div>{userProfile.basicinfo.name}</div>
         <div className="m-auto">
           <svg
             fill="none"
@@ -207,211 +207,12 @@ const Profile = () => {
             world."
           </p>
         </div>
-        <Modal open={show} onSave={handleSubmit}>
-          <form className={formStyles} onSubmit={handleSubmit}>
-            <button
-              type="button"
-              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-              onClick={() => setShow(false)}
-            >
-              <svg
-                aria-hidden="true"
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="sr-only">Close modal</span>
-            </button>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Name:
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={userProfile.basicinfo.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="grid md:grid-cols-3 md:gap-6">
-              <div className="relative z-0 w-full mb-6 group">
-                <label
-                  htmlFor=""
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  City:
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  value={userProfile.location.city}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="relative z-0 w-full mb-6 group">
-                <label
-                  htmlFor=""
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  County:
-                </label>
-                <input
-                  type="text"
-                  name="county"
-                  value={userProfile.location.county}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="relative z-0 w-full mb-6 group">
-                <label
-                  htmlFor=""
-                  className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >
-                  Postcode:
-                </label>
-                <input
-                  type="text"
-                  name="postcode"
-                  value={userProfile.location.postcode}
-                  onChange={handleChange}
-                />
-              </div>{" "}
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Gender:
-              </label>
-              <input
-                type="text"
-                name="gender"
-                value={userProfile.basicinfo.gender}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Phone:
-              </label>
-              <input
-                type="number"
-                name="phone"
-                value={userProfile.basicinfo.phone}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                University:
-              </label>
-              <input
-                type="text"
-                name="university"
-                value={userProfile.education.university}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Course:
-              </label>
-              <input
-                type="text"
-                name="course"
-                value={userProfile.education.course}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Year:
-              </label>
-              <input
-                type="number"
-                name="year"
-                value={userProfile.education.year}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Classroom:
-              </label>
-              <input
-                type="number"
-                name="classroom"
-                value={userProfile.education.classroom}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Interest:
-              </label>
-              <input
-                type="text"
-                name="interest"
-                value={userProfile.interests.map((interest) => ` ${interest}`)}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                About:
-              </label>
-              <textarea
-                name="about"
-                value={userProfile.about}
-                onChange={handleChange}
-                rows={5}
-              />
-            </div>
-            <div className="relative z-0 w-full mb-6 group">
-              <label
-                htmlFor=""
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Avatar:
-              </label>
-              <input type="file" name="avatar" onChange={handleChange} />
-            </div>
-            <button type="submit">Save changes</button>
-          </form>
-        </Modal>
+        <Modal
+          open={show}
+          onClose={handleModalClose}
+          onSave={handleSubmit}
+          userData={userProfile}
+        ></Modal>
       </div>
     </div>
   );

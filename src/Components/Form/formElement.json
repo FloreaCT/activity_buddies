@@ -1,0 +1,150 @@
+{
+  "page_label": "Form",
+  "fields": [
+    {
+      "field_id": "about",
+      "field_label": "About",
+      "field_mandatory": "no",
+      "field_placeholder": "Enter a short description about yourself",
+      "field_type": "textarea",
+      "field_value": ""
+    },
+
+    {
+      "field_id": "avatar",
+      "field_label": "Avatar",
+      "field_mandatory": "no",
+      "field_placeholder": "Upload your profile picture",
+      "field_type": "file",
+      "field_value": "avatar",
+      "avatar": ""
+    },
+
+    {
+      "field_id": "basicinfo.birthday",
+      "field_label": "Birthday",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your date of birth",
+      "field_type": "date",
+      "field_value": "birthday"
+    },
+    {
+      "field_id": "basicinfo.name",
+      "field_label": "Name",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your full name",
+      "field_type": "text",
+      "field_value": "name"
+    },
+
+    {
+      "field_id": "basicinfo.phone",
+      "field_label": "Phone",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your phone number",
+      "field_type": "tel",
+      "field_value": "phone"
+    },
+    {
+      "field_id": "basicinfo.gender",
+      "field_label": "Gender",
+      "field_mandatory": "yes",
+      "field_placeholder": "Select your gender",
+      "field_type": "text",
+      "field_value": "gender"
+    },
+
+    {
+      "field_id": "basicinfo.email",
+      "field_label": "Email",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your email address",
+      "field_type": "email",
+      "field_value": "email"
+    },
+    {
+      "field_id": "interests",
+      "field_label": "Interests",
+      "field_mandatory": "no",
+      "field_placeholder": "Enter your interests",
+      "field_type": "select",
+      "field_value": "interests"
+    },
+
+    {
+      "field_id": "education.university",
+      "field_label": "University",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your university name",
+      "field_type": "text",
+      "field_value": "university"
+    },
+
+    {
+      "field_id": "education.course",
+      "field_label": "Course",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your course name",
+      "field_type": "text",
+      "field_value": "course"
+    },
+    {
+      "field_id": "education.year",
+      "field_label": "Year",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your year of study",
+      "field_type": "number",
+      "field_value": "year"
+    },
+
+    {
+      "field_id": "education.classroom",
+      "field_label": "Classroom",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your classroom number",
+      "field_type": "number",
+      "field_value": "classroom"
+    },
+
+    {
+      "field_id": "location.city",
+      "field_label": "City",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your city",
+      "field_type": "text",
+      "field_value": ""
+    },
+
+    {
+      "field_id": "location.county",
+      "field_label": "County",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your county",
+      "field_type": "text",
+      "field_value": ""
+    },
+    {
+      "field_id": "location.postcode",
+      "field_label": "Postcode",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter your postcode",
+      "field_type": "text",
+      "field_value": ""
+    },
+    {
+      "field_id": "user.uuid",
+      "field_label": "UUID",
+      "field_mandatory": "yes",
+      "field_placeholder": "Enter a UUID",
+      "field_type": "text",
+      "field_value": ""
+    },
+
+    {
+      "field_id": "agree",
+      "field_value": "I agree to the terms",
+      "field_type": "checked",
+      "field_va;ie": "checked"
+    }
+  ]
+}

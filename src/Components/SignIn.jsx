@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { UserAuth } from "../Auth/AuthContext";
 import { useNavigate } from "react-router";
 
-
 import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
+import Form from "../Utils/Form";
+import Modal from "./Profile/Modal";
 
 const autoFillStyle = css`
   input:-webkit-autofill,
@@ -23,6 +24,8 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [theUser, setTheUser] = useState(null);
+
+  const [show, setShow] = useState(false);
   const { createUser, signIn, googleSignIn, user } = UserAuth();
 
   const navigate = useNavigate();
@@ -73,99 +76,17 @@ const SignIn = () => {
     }
   };
 
-  const handleForgotPassword = (e) => {
+  const handleForgotPassword = () => {
     return;
   };
+
+  const handleModalClose = () => {
+    setShow(false);
+  };
+
   return (
     <section className={`${autoFillStyle} h-screen`}>
       {/* <!-- Main modal --> */}
-      <div
-        id="authentication-modal"
-        tabIndex="-1"
-        aria-hidden="true"
-        className="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-      >
-        <div className="relative w-full max-w-md max-h-full">
-          {/* <!-- Modal content --> */}
-          <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <button
-              type="button"
-              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-              data-modal-hide="authentication-modal"
-            >
-              <svg
-                aria-hidden="true"
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="sr-only">Close modal</span>
-            </button>
-            <div className="px-6 py-6 lg:px-8">
-              <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                Register to Activity Buddies platform
-              </h3>
-              <form className="space-y-6" onSubmit={handleRegisterSubmit}>
-                <div>
-                  <label
-                    htmlFor="registerEmail"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  ></label>
-                  <input
-                    type="email"
-                    name="registerEmail"
-                    id="registerEmail"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="Your email address"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="registerPassword"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  ></label>
-                  <input
-                    type="password"
-                    name="registerPassword"
-                    id="registerPassword"
-                    placeholder="Your password"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="repeatPassword"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  ></label>
-                  <input
-                    type="password"
-                    name="repeatPassword"
-                    id="repeatPassword"
-                    placeholder="Repeat password"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Create your account
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="h-full">
         {/* <!-- Left column container with background--> */}
@@ -270,10 +191,9 @@ const SignIn = () => {
                   Or if you dont have an account you can
                   {/* <!-- Modal toggle --> */}
                   <button
-                    data-modal-target="authentication-modal"
-                    data-modal-toggle="authentication-modal"
                     className="inline-block rounded bg-red-600 mx-4 px-5 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-red-800 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                     type="button"
+                    onClick={() => setShow(true)}
                   >
                     Register
                   </button>
@@ -283,6 +203,8 @@ const SignIn = () => {
           </div>
         </div>
       </div>
+
+      <Modal open={show} onClose={handleModalClose}></Modal>
     </section>
   );
 };
