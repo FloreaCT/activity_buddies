@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { FormContext } from "../FormContext";
 
-const Input = ({
+const Number = ({
   field_id,
   field_mandatory,
   field_label,
-  field_value,
   field_type,
+  field_placeholder,
+  field_value,
 }) => {
   const { handleChange } = useContext(FormContext);
 
@@ -32,4 +33,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default Number;

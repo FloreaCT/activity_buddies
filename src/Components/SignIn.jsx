@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
-import Form from "../Utils/Form";
 import Modal from "./Profile/Modal";
 
 const autoFillStyle = css`
@@ -13,7 +12,7 @@ const autoFillStyle = css`
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
     border: 0px;
-    -webkit-text-fill-color: blue;
+    -webkit-text-fill-color: #4285f4;
     -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
@@ -46,21 +45,6 @@ const SignIn = () => {
       navigate("/");
     } catch (e) {
       console.log(e.message);
-    }
-  };
-
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const newUser = await createUser(email, password);
-      if (newUser) {
-        const sign = await signIn(email, password);
-        console.log(sign);
-        navigate("activities/my-activities");
-      }
-    } catch (e) {
-      setError(e.message);
-      alert(e.message);
     }
   };
 
@@ -204,7 +188,7 @@ const SignIn = () => {
         </div>
       </div>
 
-      <Modal open={show} onClose={handleModalClose}></Modal>
+      <Modal open={show} onClose={handleModalClose} register={true}></Modal>
     </section>
   );
 };

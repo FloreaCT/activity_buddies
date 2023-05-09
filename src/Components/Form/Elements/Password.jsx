@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { FormContext } from "../FormContext";
 
-const Input = ({
+const Password = ({
   field_id,
   field_mandatory,
   field_label,
@@ -9,7 +9,6 @@ const Input = ({
   field_type,
 }) => {
   const { handleChange } = useContext(FormContext);
-
   return (
     <div className="relative z-0 w-full mb-6 group">
       <input
@@ -32,4 +31,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default Password;

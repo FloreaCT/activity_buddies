@@ -25,12 +25,18 @@ const modalOverlay = css`
   background-color: rgba(0, 0, 0, 0.7);
 `;
 
-const Modal = ({ open, onClose, userData }) => {
+const Modal = ({ open, onClose, userData, register, handleSubmit }) => {
   if (!open) return null;
   return ReactDom.createPortal(
     <div className={modalOverlay}>
       <div className={modalStyles}>
-        <Form open={open} onClose={onClose} userData={userData} />
+        <Form
+          open={open}
+          onClose={onClose}
+          userData={userData}
+          register={register}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </div>,
     document.getElementById("portal")

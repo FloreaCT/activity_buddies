@@ -15,3 +15,7 @@ export const createUser = async (userData) => {
     userData,
   });
 };
+
+export const verifyExistingUser = async (userData) => {
+  
+};

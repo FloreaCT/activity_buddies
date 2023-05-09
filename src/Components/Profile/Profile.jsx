@@ -96,8 +96,8 @@ const Profile = () => {
     })();
   }, []);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     // Handle form submission logic here
     setShow(false);
   };
@@ -212,6 +212,7 @@ const Profile = () => {
           onClose={handleModalClose}
           onSave={handleSubmit}
           userData={userProfile}
+          register={false}
         ></Modal>
       </div>
     </div>
