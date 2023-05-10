@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 import ReactDom from "react-dom";
 import Form from "../Form/Form";
+import RegisterForm from "../Form/RegisterForm";
 
 const modalStyles = css`
   position: relative;
@@ -25,18 +26,35 @@ const modalOverlay = css`
   background-color: rgba(0, 0, 0, 0.7);
 `;
 
-const Modal = ({ open, onClose, userData, register, handleSubmit }) => {
+const Modal = ({
+  open,
+  onClose,
+  userData,
+  register,
+  handleSubmit,
+  userProfile,
+}) => {
   if (!open) return null;
   return ReactDom.createPortal(
     <div className={modalOverlay}>
       <div className={modalStyles}>
-        <Form
-          open={open}
-          onClose={onClose}
-          userData={userData}
-          register={register}
-          handleSubmit={handleSubmit}
-        />
+        {!register ? (
+          <Form
+            open={open}
+            onClose={onClose}
+            userProfile={userProfile}
+            register={register}
+            handleSubmit={handleSubmit}
+          />
+        ) : (
+          <RegisterForm
+            open={open}
+            onClose={onClose}
+            userData={userData}
+            handleSubmit={handleSubmit}
+            register={register}
+          />
+        )}
       </div>
     </div>,
     document.getElementById("portal")

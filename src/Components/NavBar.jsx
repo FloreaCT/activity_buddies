@@ -5,6 +5,7 @@ import { UserAuth } from "../Auth/AuthContext";
 const NavBar = () => {
   const { logout, user } = UserAuth();
   const navigate = useNavigate();
+
   const handleLogOut = async () => {
     try {
       await logout();
@@ -129,7 +130,11 @@ const NavBar = () => {
 
             <span className="flex-1 ml-3 whitespace-nowrap">Activities</span>
           </NavLink>
-
+          {!user.emailVerified ? (
+            <div className="text-red-600 text-center rounded-lg border-4 border-red-600">
+              PLEASE VERIFY YOUR EMAIL
+            </div>
+          ) : null}
           <span className="grow"></span>
           <button
             type="button"

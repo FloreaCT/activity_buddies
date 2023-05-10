@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { UserAuth } from "../Auth/AuthContext";
 import { useNavigate } from "react-router";
-
+import { auth } from "../Config/firebase";
 import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
 import Modal from "./Profile/Modal";
+import { createSyncedUser, verifyExistingUser } from "./Profile/ProfileService";
 
 const autoFillStyle = css`
   input:-webkit-autofill,
@@ -25,8 +26,8 @@ const SignIn = () => {
   const [theUser, setTheUser] = useState(null);
 
   const [show, setShow] = useState(false);
-  const { createUser, signIn, googleSignIn, user } = UserAuth();
-
+  const { signIn, googleSignIn, user } = UserAuth();
+  const register = auth?.currentUser?.uid ? false : true;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,7 +43,24 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn();
-      navigate("/");
+      const verify = await verifyExistingUser(auth.currentUser.uid);
+      if (verify) {
+        navigate("/");
+      } else {
+        const names = auth.currentUser.displayName.split(" ");
+        const lastName = names.pop();
+        const firstName = names.join(" ");
+        const newUser = {
+          id: auth.currentUser.uid,
+          firstName: firstName,
+          lastName: lastName,
+          email: auth.currentUser.email,
+          avatar: auth.currentUser.photoURL,
+        };
+
+        createSyncedUser(newUser, register, auth.currentUser.uid);
+        navigate("/");
+      }
     } catch (e) {
       console.log(e.message);
     }
@@ -188,7 +206,7 @@ const SignIn = () => {
         </div>
       </div>
 
-      <Modal open={show} onClose={handleModalClose} register={true}></Modal>
+      <Modal open={show} onClose={handleModalClose} register={register}></Modal>
     </section>
   );
 };
