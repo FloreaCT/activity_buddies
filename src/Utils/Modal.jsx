@@ -1,8 +1,8 @@
 import { css } from "@emotion/css";
 import React from "react";
 import ReactDom from "react-dom";
-import Form from "../Form/Form";
-import RegisterForm from "../Form/RegisterForm";
+import Form from "../Components/Form/Form";
+import RegisterForm from "../Components/Form/RegisterForm";
 
 const modalStyles = css`
   position: relative;

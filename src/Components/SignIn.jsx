@@ -5,7 +5,7 @@ import { auth } from "../Config/firebase";
 import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
-import Modal from "./Profile/Modal";
+import Modal from "../Utils/Modal";
 import { createSyncedUser, verifyExistingUser } from "./Profile/ProfileService";
 
 const autoFillStyle = css`
@@ -28,6 +28,7 @@ const SignIn = () => {
   const [show, setShow] = useState(false);
   const { signIn, googleSignIn, user } = UserAuth();
   const register = auth?.currentUser?.uid ? false : true;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,8 +57,10 @@ const SignIn = () => {
           lastName: lastName,
           email: auth.currentUser.email,
           avatar: auth.currentUser.photoURL,
+          phone: "Please set your phone number",
+          university: "Please set your university",
+          password: null,
         };
-
         createSyncedUser(newUser, register, auth.currentUser.uid);
         navigate("/");
       }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Modal from "./Modal";
+import Modal from "../../Utils/Modal";
 import { css } from "@emotion/css";
 import { retrieveProfile } from "./ProfileService";
 import { auth } from "../../Config/firebase";
@@ -66,7 +66,7 @@ const Profile = () => {
     basicinfo: {
       birthday: "",
       firstName: "",
-      LastName: "",
+      lastName: "",
       phone: 0,
       gender: "",
       email: "",
@@ -108,7 +108,7 @@ const Profile = () => {
       }
     });
     return unsubscribe;
-  }, []);
+  }, [show]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -197,7 +197,7 @@ const Profile = () => {
                     key={i}
                     className="inline-block bg-green-50 rounded-full mx-1 px-2 py-1 text-sm font-semibold text-gray-600"
                   >
-                    {interest}
+                    #{interest.trim()}
                   </span>
                 );
               })}

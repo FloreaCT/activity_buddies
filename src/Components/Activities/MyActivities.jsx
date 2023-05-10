@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from "../../Utils/Modal";
 
 const MyActivities = () => {
   const createActivityHandler = () => {
