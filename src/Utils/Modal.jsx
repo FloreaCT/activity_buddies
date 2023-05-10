@@ -3,6 +3,7 @@ import React from "react";
 import ReactDom from "react-dom";
 import Form from "../Components/Form/Form";
 import RegisterForm from "../Components/Form/RegisterForm";
+import ActivityForm from "../Components/Form/ActivityForm";
 
 const modalStyles = css`
   position: relative;
@@ -35,27 +36,50 @@ const Modal = ({
   userProfile,
 }) => {
   if (!open) return null;
+
+  let content;
+
+  switch (register) {
+    case true:
+      content = (
+        <RegisterForm
+          open={open}
+          onClose={onClose}
+          userData={userData}
+          handleSubmit={handleSubmit}
+          register={register}
+        />
+      );
+      break;
+    case false:
+      content = (
+        <Form
+          open={open}
+          onClose={onClose}
+          userProfile={userProfile}
+          register={register}
+          handleSubmit={handleSubmit}
+        />
+      );
+      break;
+    case "activity":
+      content = (
+        <ActivityForm
+          open={open}
+          onClose={onClose}
+          userProfile={userProfile}
+          register={register}
+          handleSubmit={handleSubmit}
+        />
+      );
+      break;
+    default:
+      content = null;
+  }
+
   return ReactDom.createPortal(
     <div className={modalOverlay}>
-      <div className={modalStyles}>
-        {!register ? (
-          <Form
-            open={open}
-            onClose={onClose}
-            userProfile={userProfile}
-            register={register}
-            handleSubmit={handleSubmit}
-          />
-        ) : (
-          <RegisterForm
-            open={open}
-            onClose={onClose}
-            userData={userData}
-            handleSubmit={handleSubmit}
-            register={register}
-          />
-        )}
-      </div>
+      <div className={modalStyles}>{content}</div>
     </div>,
     document.getElementById("portal")
   );

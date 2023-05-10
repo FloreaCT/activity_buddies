@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "../../Utils/Modal";
 import { css } from "@emotion/css";
-import { retrieveProfile } from "./ProfileService";
+import { retrieveProfile } from "../../Services/ProfileService";
 import { auth } from "../../Config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import _ from "lodash";
@@ -212,6 +212,7 @@ const Profile = () => {
               onClose={handleModalClose}
               onSave={handleSubmit}
               userProfile={userProfile}
+              register={false}
             ></Modal>
           </div>
         </div>

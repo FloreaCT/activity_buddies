@@ -6,7 +6,10 @@ import GoogleButton from "react-google-button";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
 import Modal from "../Utils/Modal";
-import { createSyncedUser, verifyExistingUser } from "./Profile/ProfileService";
+import {
+  createSyncedUser,
+  verifyExistingUser,
+} from "../Services/ProfileService";
 
 const autoFillStyle = css`
   input:-webkit-autofill,

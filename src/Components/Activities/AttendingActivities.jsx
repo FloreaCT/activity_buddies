@@ -4,7 +4,8 @@ const AttendingActivities = () => {
   return (
     <div className="flex flex-row space-x-4 m-auto basis-1/3 align-center justify-center">
       <div className="w-screen border-2 text-center rounded-md pb-10">
-        <h1 className="font-bold text-2xl mt-2">Attending activities</h1>
+        <h1 className="font-bold text-2xl my-2">Attending activities</h1>
+        <hr className="w-[20%] h-1 mx-auto my-2 bg-green-100 border-0 rounded md:my-6 dark:bg-gray-700"></hr>
         <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 items-center">
           <div className="flex">
             <img
@@ -14,7 +15,7 @@ const AttendingActivities = () => {
             />
           </div>
           <div className="flex-row">
-            <h3 className="font-bold text-2xl mb-4">Meeting to code!</h3>
+            <h3 className="font-bold text-2xl my-4">Meeting to code!</h3>
             <div>
               Come join us in an amazing coding session where you will learn how
               to become the master zen of all coding languages!

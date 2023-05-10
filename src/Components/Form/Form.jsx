@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { initFlowbite } from "flowbite";
 import { css } from "@emotion/css";
-import { updateProfile } from "../Profile/ProfileService";
+import { updateProfile } from "../../Services/ProfileService";
 
 const autoFillStyle = css`
   input:-webkit-autofill,

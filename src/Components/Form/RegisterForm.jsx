@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { css } from "@emotion/css";
 import { useNavigate } from "react-router";
 import { UserAuth } from "../../Auth/AuthContext";
-import { createSyncedUser } from "../Profile/ProfileService";
+import { createSyncedUser } from "../../Services/ProfileService";
 import { sendEmailVerification } from "firebase/auth";
 
 const autoFillStyle = css`

@@ -1,5 +1,5 @@
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../../Config/firebase";
+import { auth, db } from "../Config/firebase";
 import _ from "lodash";
 
 export const retrieveProfile = async (uid) => {
