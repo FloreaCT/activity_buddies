@@ -1,6 +1,5 @@
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../Config/firebase";
-import _ from "lodash";
 
 export const retrieveProfile = async (uid) => {
   const docRef = doc(db, "users", uid);
@@ -33,7 +32,6 @@ export const createSyncedUser = async (userData, register, uid) => {
       postcode: "and postcode",
     },
     uid: register ? uid : userData.id,
-    password: register ? userData.password : null,
   });
 
   const snapshot = await getDoc(doc(db, "users", register ? uid : userData.id));

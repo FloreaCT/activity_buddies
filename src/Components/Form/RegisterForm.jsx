@@ -29,9 +29,6 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
     try {
       const userResponse = await createUser(email, password);
       if (userResponse) {
-        console.log("new user is: ", newUser);
-        console.log("register is ", register);
-        console.log("user id is", userResponse.user.uid);
         createSyncedUser(newUser, register, userResponse.user.uid);
         sendEmailVerification(userResponse.user);
         signIn(email, password);

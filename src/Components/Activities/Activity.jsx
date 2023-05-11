@@ -27,6 +27,18 @@ const Activity = ({ activity, isSearchPage }) => {
             <span className="font-bold">Location: </span>
             <div>{activity.location}</div>
           </div>
+          <div className="flex-nowrap justify-center gap-2 mx-6 px-4 py-4 mb-2 text-center">
+            {activity.tags.map((interest, i) => {
+              return (
+                <span
+                  key={i}
+                  className="inline-block bg-green-50 rounded-full mx-1 px-2 py-1 text-sm font-semibold text-black-600"
+                >
+                  #{interest.trim()}
+                </span>
+              );
+            })}
+          </div>
         </div>
       </div>
       <div className="flex-row">

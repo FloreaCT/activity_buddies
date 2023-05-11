@@ -62,7 +62,6 @@ const SignIn = () => {
           avatar: auth.currentUser.photoURL,
           phone: "Please set your phone number",
           university: "Please set your university",
-          password: null,
         };
         createSyncedUser(newUser, register, auth.currentUser.uid);
         navigate("/");

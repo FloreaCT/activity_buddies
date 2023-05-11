@@ -81,7 +81,6 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
     } else if (name.startsWith("basicinfo.")) {
       // Handle nested fields in basicinfo object
       const nestedField = name.split("basicinfo.")[1];
-      console.log(nestedField, ":", value);
       setFormValues((prevState) => ({
         ...prevState,
         basicinfo: {

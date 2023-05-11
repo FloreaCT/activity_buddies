@@ -162,7 +162,6 @@ const Profile = () => {
               <div>
                 <button
                   onClick={() => {
-                    console.log(prevUserProfileRef);
                     setShow(true);
                   }}
                   type="button"
