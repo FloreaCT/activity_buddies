@@ -3,51 +3,32 @@ import Modal from "../../Utils/Modal";
 import Activity from "./Activity";
 import Button from "../../Utils/Button";
 import FilterSection from "./FilterActivities";
-
+import { retrieveUserActivities } from "../../Services/ActivityService";
+import { UserAuth } from "../../Auth/AuthContext";
 const MyActivities = () => {
-  const [activities, setActivities] = useState([]);
-  const [filteredActivities, setFilteredActivities] = useState(activities);
+  const [allActivities, setAllActivities] = useState([]);
+  const [filteredActivities, setFilteredActivities] = useState([]);
   const [show, setShow] = useState(false);
+  const { user, dbUser } = UserAuth();
+  console.log(dbUser);
+  useEffect(() => {
+    const handleActivitiesUpdate = (activities) => {
+      setAllActivities(activities);
+    };
+    if (user && user.uid) {
+      const unsubscribe = retrieveUserActivities(handleActivitiesUpdate, user);
+      return () => {
+        unsubscribe;
+      };
+    }
+  }, [user]);
 
   useEffect(() => {
-    setActivities([
-      {
-        title: "My activity",
-        image: "../public/img/activity.jpg",
-        description: "My description",
-        date: "Today",
-        time: "Now",
-        location: "Everywhere",
-        attendees: 10,
-        maxAttendees: 10,
-        timeLeft: "2 days 1h",
-        tags: ["swiming", "dancing"],
-        creator: {
-          profileImage: "../../public/img/profile-picture.jpg",
-          name: "Cristian",
-        },
-      },
-      {
-        title: "My other activity",
-        image: "../public/img/activity.jpg",
-        description: "My best description",
-        date: "Tomorrow",
-        time: "20:30",
-        location: "Solihull",
-        attendees: 10,
-        maxAttendees: 20,
-        timeLeft: "2 days 1h",
-        tags: ["runing", "jumping around"],
-        creator: {
-          profileImage: "../../public/img/profile-picture.jpg",
-          name: "Cristian",
-        },
-      },
-    ]);
-  }, [filteredActivities]);
+    setFilteredActivities(allActivities);
+  }, [allActivities]);
 
   const handleFilterChange = (filter) => {
-    const filtered = activities.filter((activity) => {
+    const filtered = allActivities.filter((activity) => {
       const filterActivity = filter.activity.toLowerCase().trim();
       const filterLocation = filter.location.toLowerCase().trim();
       // const filterDate = filter.date.trim(); To be added later
@@ -85,9 +66,13 @@ const MyActivities = () => {
           onClick={() => setShow(true)}
         />
         <FilterSection onFilterChange={handleFilterChange} />
-        {activities ? (
-          activities.map((activity, i) => (
-            <Activity key={i} activity={activity} isSearchPage={true} />
+        {filteredActivities.length > 0 ? (
+          filteredActivities.map((activity, i) => (
+            <Activity key={i} activity={activity} />
+          ))
+        ) : allActivities ? (
+          allActivities.map((activity, i) => (
+            <Activity key={i} activity={activity} />
           ))
         ) : (
           <div>Loading...</div>
@@ -97,5 +82,4 @@ const MyActivities = () => {
     </div>
   );
 };
-
 export default MyActivities;

@@ -4,6 +4,8 @@ import { css } from "@emotion/css";
 import DatePicker from "react-datepicker";
 import { GoCalendar } from "react-icons/go";
 import "react-datepicker/dist/react-datepicker.css";
+import { addActivity } from "../../Services/ActivityService";
+import { UserAuth } from "../../Auth/AuthContext";
 
 const autoFillStyle = css`
   input:-webkit-autofill,
@@ -19,23 +21,23 @@ const ActivityForm = ({ onClose = { onClose } }) => {
   const [activity, setActivity] = useState({
     title: "",
     image: "",
+    tags: [],
     description: "",
     date: new Date(),
     time: "",
     location: "",
     attendees: 0,
     maxAttendees: 0,
-    creator: {
-      profileImage: "",
-      name: "",
-    },
   });
+
+  const { dbUser } = UserAuth();
 
   const dateRef = useRef(null);
 
   const openDate = () => {
     dateRef.current.setFocus();
   };
+
   const handleChange = (event, name) => {
     if (name) {
       setActivity((prevActivity) => ({
@@ -50,6 +52,10 @@ const ActivityForm = ({ onClose = { onClose } }) => {
       }));
     }
     console.log(activity);
+  };
+
+  const handleAddActivity = (activity) => {
+    addActivity(activity, dbUser);
   };
 
   const handleSubmit = (e) => {
@@ -205,6 +211,7 @@ const ActivityForm = ({ onClose = { onClose } }) => {
                 "text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm mb-4 px-4 py-2"
               }
               text="Create activity"
+              onClick={() => handleAddActivity(activity)}
             />
           </div>
         </div>

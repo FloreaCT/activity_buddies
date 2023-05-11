@@ -10,7 +10,7 @@ export const retrieveProfile = async (uid) => {
 export const createSyncedUser = async (userData, register, uid) => {
   const newUser = await setDoc(doc(db, "users", register ? uid : userData.id), {
     about: "Please write something amazing about you",
-    avatar: "../../public/img/profile-picture.jpg",
+    avatar: userData.avatar,
     basicinfo: {
       birthday: "Please set your birthday",
       firstName: userData.firstName,

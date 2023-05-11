@@ -46,7 +46,10 @@ const Activity = ({ activity, isSearchPage }) => {
           <div className="flex-row relative">
             <h3 className="font-bold text-2xl">Created by</h3>
             <div className="h-20 w-20 m-auto">
-              <img src={activity.creator.profileImage} />
+              <img
+                src={activity.creator.profileImage}
+                className="rounded-full"
+              />
             </div>
             <p className="mb-2">{activity.creator.name}</p>
             <p className="font-bold text-1xl">Time left until event starts:</p>
