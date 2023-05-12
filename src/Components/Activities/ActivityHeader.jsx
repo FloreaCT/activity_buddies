@@ -15,7 +15,7 @@ const ActivityHeader = () => {
 
   return (
     <Fragment>
-      <ul className="mx-4 my-4 py-2 grid grid-flow-col text-center text-black-500 bg-green-100 rounded-full px-1">
+      <ul className="mx-4 my-4 py-2 grid grid-flow-col text-center text-black-500 bg-green-50 rounded-full px-1">
         <li
           className={`grow justify-center py-2 ${
             isActive("/activities/attending-activities")

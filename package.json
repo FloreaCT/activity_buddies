@@ -17,6 +17,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@google-cloud/storage": "^6.10.1",
     "dotenv": "^16.0.3",
     "firebase": "^9.21.0",
     "flowbite": "^1.6.5",

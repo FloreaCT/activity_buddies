@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,9 +20,12 @@ const firebaseConfig = {
   measurementId: "G-PEZ6LW2SZC",
 };
 
+// Initialize Cloud Storage and get a reference to the service
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig, "Activity Buddies");
 
+const storage = getStorage(app);
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 

@@ -34,6 +34,7 @@ const Modal = ({
   register,
   handleSubmit,
   userProfile,
+  activity
 }) => {
   if (!open) return null;
 
@@ -70,6 +71,7 @@ const Modal = ({
           userProfile={userProfile}
           register={register}
           handleSubmit={handleSubmit}
+          activity={activity}
         />
       );
       break;

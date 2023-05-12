@@ -9,9 +9,9 @@ import {
 } from "firebase/firestore";
 import { db } from "../Config/firebase";
 
-export const addActivity = async (activity, dbUser) => {
+export const addActivity = async (formData, dbUser) => {
   const modifiedActivitiy = {
-    ...activity,
+    ...formData,
     creator: {
       profileImage: dbUser.avatar,
       name: dbUser.basicinfo.firstName + " " + dbUser.basicinfo.lastName,
@@ -21,11 +21,11 @@ export const addActivity = async (activity, dbUser) => {
 
   const newActivity = doc(collection(db, "activities"));
   const setActivity = await setDoc(newActivity, modifiedActivitiy);
-  console.log(setActivity);
+  console.log("Activity has been saved to the database");
 };
 
 export const retrieveUserActivities = async (callback, user) => {
-  console.log(user);
+
   const activitiesRef = collection(db, "activities");
   const userActivities = query(
     activitiesRef,
@@ -45,3 +45,9 @@ export const retrieveUserActivities = async (callback, user) => {
     unsubscribe();
   };
 };
+
+export const updateActivity = async () => {
+
+};
+
+export const deleteActivity = async () => {};

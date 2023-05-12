@@ -194,7 +194,7 @@ const Profile = () => {
                 return (
                   <span
                     key={i}
-                    className="inline-block bg-green-50 rounded-full mx-1 px-2 py-1 text-sm font-semibold text-gray-600"
+                    className="inline-block bg-green-50 rounded-full mx-1 px-2 py-1 text-sm font-semibold text-black-600"
                   >
                     #{interest.trim()}
                   </span>

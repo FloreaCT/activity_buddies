@@ -76,7 +76,7 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
       const interestsArray = value.split(",");
       setFormValues((prevState) => ({
         ...prevState,
-        [name]: interestsArray,
+        [name]: interestsArray.map((interest) => interest.trim()),
       }));
     } else if (name.startsWith("basicinfo.")) {
       // Handle nested fields in basicinfo object
@@ -95,7 +95,6 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
         [name]: value,
       }));
     }
-    console.log(formValues);
   };
 
   const handleSubmit = (e) => {
@@ -162,7 +161,6 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
               name="location.city"
               id="location.city"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
               max={4}
               min={0}
               defaultValue={userProfile.location.city}

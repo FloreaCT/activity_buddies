@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../Utils/Button";
+import Modal from "../../Utils/Modal";
 
 const Activity = ({ activity, isSearchPage }) => {
+  const [show, setShow] = useState(false);
+
+  console.log("In activity.jsx", activity);
+  const handleModalClose = () => {
+    setShow(false);
+  };
   return (
     <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 py-4 my-2 justify-center align-center content-center items-center">
       <div id="image" name="image" className="flex">
@@ -62,6 +69,7 @@ const Activity = ({ activity, isSearchPage }) => {
         <Button
           type={"button"}
           text={"Edit"}
+          onClick={() => setShow(true)}
           buttonStyles={
             "text-white mr-4 bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
           }
@@ -73,6 +81,14 @@ const Activity = ({ activity, isSearchPage }) => {
             "text-white bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
           }
         />
+        <>
+          <Modal
+            open={show}
+            onClose={handleModalClose}
+            register={"activity"}
+            activity={activity}
+          />
+        </>
       </div>
     </div>
   );

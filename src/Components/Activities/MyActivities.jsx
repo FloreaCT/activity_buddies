@@ -9,8 +9,8 @@ const MyActivities = () => {
   const [allActivities, setAllActivities] = useState([]);
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [show, setShow] = useState(false);
-  const { user, dbUser } = UserAuth();
-  console.log(dbUser);
+  const { user } = UserAuth();
+
   useEffect(() => {
     const handleActivitiesUpdate = (activities) => {
       setAllActivities(activities);
