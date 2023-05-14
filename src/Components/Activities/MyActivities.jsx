@@ -15,6 +15,7 @@ const MyActivities = () => {
   const [show, setShow] = useState(false);
   const { user } = UserAuth();
 
+  const creator = false;
   useEffect(() => {
     const handleActivitiesUpdate = (activities) => {
       setAllActivities(activities);
@@ -76,6 +77,7 @@ const MyActivities = () => {
               key={i}
               activity={activity}
               deleteActivity={deleteActivity}
+              creator={creator}
             />
           ))
         ) : allActivities ? (
@@ -84,12 +86,18 @@ const MyActivities = () => {
               key={i}
               activity={activity}
               deleteActivity={deleteActivity}
+              creator={creator}
             />
           ))
         ) : (
           <div>Loading...</div>
         )}
-        <Modal open={show} onClose={handleModalClose} register={"activity"} />
+        <Modal
+          open={show}
+          onClose={handleModalClose}
+          register={"activity"}
+          creator={creator}
+        />
       </div>
     </div>
   );

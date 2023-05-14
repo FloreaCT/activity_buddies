@@ -37,6 +37,7 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
       postcode: "",
     },
     uid: 0,
+    attendances: [],
   });
 
   useEffect(() => {

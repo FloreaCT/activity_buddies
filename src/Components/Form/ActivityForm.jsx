@@ -18,10 +18,12 @@ const autoFillStyle = css`
   }
 `;
 
-const ActivityForm = ({ activity = {}, onClose = { onClose } }) => {
+const ActivityForm = ({
+  activity = {},
+  onClose = { onClose },
+  creator = { creator },
+}) => {
   const [isUploading, setIsUploading] = useState(false);
-
-  const [isDisabled, setIsDisabled] = useState(true);
   const [formData, setFormData] = useState({
     title: activity.title || "",
     image: "",

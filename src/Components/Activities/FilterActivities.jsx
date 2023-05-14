@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../../Utils/Button";
 
 function FilterSection({ onFilterChange }) {
   const [filter, setFilter] = useState({
@@ -49,7 +50,13 @@ function FilterSection({ onFilterChange }) {
           onChange={(e) => handleFilterChange(e)}
         />
       </label>
-      <button onClick={handleApplyFilter}>Apply Filter</button>
+      <Button
+        onClick={handleApplyFilter}
+        text="Apply Filter"
+        buttonStyles={
+          "text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm mb-4 ml-2 px-4 py-2"
+        }
+      />
     </div>
   );
 }

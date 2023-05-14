@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 import Button from "../../Utils/Button";
 import Modal from "../../Utils/Modal";
+import { joinActivity } from "../../Services/ActivityService";
+import { UserAuth } from "../../Auth/AuthContext";
 
-const Activity = ({ activity, isSearchPage, deleteActivity }) => {
+const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
   const [show, setShow] = useState(false);
+  const { user } = UserAuth();
+
   const handleModalClose = () => {
     setShow(false);
   };
   const deleteOneActivity = () => {
     deleteActivity(activity.id, activity.image);
   };
+
+  // Calculating the time until the activity starts
+  const now = new Date();
+  const eventStart = new Date(activity.date);
+  const timeUntilEvent = eventStart - now;
+  const days = Math.floor(timeUntilEvent / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeUntilEvent / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeUntilEvent / (1000 * 60)) % 60);
+
   return (
     <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 py-4 my-2 justify-center align-center content-center items-center">
       <div id="image" name="image" className="flex">
@@ -50,7 +63,7 @@ const Activity = ({ activity, isSearchPage, deleteActivity }) => {
         </div>
       </div>
       <div className="flex-row">
-        {isSearchPage && (
+        {creator ? (
           <div className="flex-row relative">
             <h3 className="font-bold text-2xl">Created by</h3>
             <div className="h-20 w-20 m-auto">
@@ -61,36 +74,67 @@ const Activity = ({ activity, isSearchPage, deleteActivity }) => {
             </div>
             <p className="mb-2">{activity.creator.name}</p>
             <p className="font-bold text-1xl">Time left until event starts:</p>
-            <p>{activity.timeLeft}</p>
+            <p>
+              {days > 1 ? days + " days," : null} {hours} hours, {minutes}{" "}
+              minutes
+            </p>
+            <div className="font-bold">
+              {activity.attendees}/{activity.maxAttendees} Attenders
+            </div>
+            <Button
+              onClick={() => joinActivity(user.uid, activity.id)}
+              type="button"
+              text="Join"
+              buttonStyles="right-0 text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            />
+          </div>
+        ) : isSearchPage ? (
+          <div className="flex-row relative">
+            <h3 className="font-bold text-2xl">Created by</h3>
+            <div className="h-20 w-20 m-auto">
+              <img
+                src={activity.creator.profileImage}
+                className="rounded-full"
+              />
+            </div>
+            <p className="mb-2">{activity.creator.name}</p>
+            <p className="font-bold text-1xl">Time left until event starts:</p>
+            <p>
+              {days ? days + " days" : null}, {hours} hours, {minutes} minutes
+            </p>
+          </div>
+        ) : (
+          <div className="flex-row">
+            <div className="font-bold">
+              {activity.attendees}/{activity.maxAttendees} attenders
+            </div>
+            <Button
+              type={"button"}
+              text={"Edit"}
+              onClick={() => setShow(true)}
+              buttonStyles={
+                "text-white mr-4 bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
+              }
+            />
+            <Button
+              type={"button"}
+              text={"Delete"}
+              onClick={() => deleteOneActivity()}
+              buttonStyles={
+                "text-white bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
+              }
+            />
+            <>
+              <Modal
+                open={show}
+                onClose={handleModalClose}
+                register={"activity"}
+                activity={activity}
+                creator={creator}
+              />
+            </>
           </div>
         )}
-        <div className="font-bold">
-          {activity.attendees}/{activity.maxAttendees} attenders
-        </div>
-        <Button
-          type={"button"}
-          text={"Edit"}
-          onClick={() => setShow(true)}
-          buttonStyles={
-            "text-white mr-4 bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
-          }
-        />
-        <Button
-          type={"button"}
-          text={"Delete"}
-          onClick={() => deleteOneActivity()}
-          buttonStyles={
-            "text-white bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
-          }
-        />
-        <>
-          <Modal
-            open={show}
-            onClose={handleModalClose}
-            register={"activity"}
-            activity={activity}
-          />
-        </>
       </div>
     </div>
   );

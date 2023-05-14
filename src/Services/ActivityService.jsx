@@ -8,6 +8,9 @@ import {
   where,
   deleteDoc,
   updateDoc,
+  getDocs,
+  FieldValue,
+  increment,
 } from "firebase/firestore";
 import { db, storageRef } from "../Config/firebase";
 import { deleteObject, ref } from "firebase/storage";
@@ -82,5 +85,62 @@ export const deleteActivity = async (activityId, imageUrl) => {
     await deleteDoc(activityRef);
   } catch (e) {
     console.error("Error while trying to delete image: ", e);
+  }
+};
+
+// Add user attendace
+export const joinActivity = async (userId, activityId) => {
+  console.log(userId);
+  const userRef = doc(db, "users", userId);
+
+  // Get a reference to the attendances subcollection
+  const attendancesRef = collection(userRef, "attendances");
+
+  // Get a reference to the activity document for the attendance
+  const activityRef = doc(db, "activities", activityId);
+
+  // Add the attendance to the attendances subcollection
+  setDoc(doc(attendancesRef, activityId), {
+    activityRef: activityRef,
+  })
+    .then(() => {
+      console.log(activityRef);
+      // Update the attendeeIds field in the activity document
+      updateDoc(activityRef, {
+        attendees: increment(1),
+      })
+        .then(() => {
+          console.log("Attendee added to activity successfully!");
+        })
+        .catch((error) => {
+          console.error("Error adding attendee to activity: ", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error adding attendance: ", error);
+    });
+};
+
+export const userAttendances = async () => {
+  // Get a reference to the user document
+  const userRef = doc(db, "users", userId);
+
+  // Get a reference to the attendances subcollection
+  const attendancesRef = collection(userRef, "attendances");
+
+  // Query the attendances subcollection for the user document
+  try {
+    const querySnapshot = await getDocs(attendancesRef);
+    const activities = [];
+    querySnapshot.forEach((doc) => {
+      const activity = {
+        id: doc.id,
+        activityRef: doc.data().activityRef,
+      };
+      activities.push(activity);
+    });
+    console.log("Activities: ", activities);
+  } catch (error) {
+    console.error("Error getting activities: ", error);
   }
 };
