@@ -25,6 +25,7 @@ const modalOverlay = css`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
 `;
 
 const Modal = ({
@@ -34,7 +35,7 @@ const Modal = ({
   register,
   handleSubmit,
   userProfile,
-  activity
+  activity,
 }) => {
   if (!open) return null;
 

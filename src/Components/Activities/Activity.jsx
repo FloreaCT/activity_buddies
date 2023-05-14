@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import Button from "../../Utils/Button";
 import Modal from "../../Utils/Modal";
 
-const Activity = ({ activity, isSearchPage }) => {
+const Activity = ({ activity, isSearchPage, deleteActivity }) => {
   const [show, setShow] = useState(false);
-
-  console.log("In activity.jsx", activity);
   const handleModalClose = () => {
     setShow(false);
+  };
+  const deleteOneActivity = () => {
+    deleteActivity(activity.id, activity.image);
   };
   return (
     <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 py-4 my-2 justify-center align-center content-center items-center">
@@ -28,7 +29,7 @@ const Activity = ({ activity, isSearchPage }) => {
         <div name="eventLocation" id="eventLocation" className="mt-4">
           <p className="font-bold">Event will take place on: </p>
           <div name="eventTime" id="eventTime">
-            {activity.date} at {activity.time}
+            {activity.date.toString()} at {activity.time}
           </div>
           <div name="eventAddress" id="eventAddress" className="mt-4">
             <span className="font-bold">Location: </span>
@@ -77,6 +78,7 @@ const Activity = ({ activity, isSearchPage }) => {
         <Button
           type={"button"}
           text={"Delete"}
+          onClick={() => deleteOneActivity()}
           buttonStyles={
             "text-white bg-red-600 hover:bg-red-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
           }

@@ -3,8 +3,12 @@ import Modal from "../../Utils/Modal";
 import Activity from "./Activity";
 import Button from "../../Utils/Button";
 import FilterSection from "./FilterActivities";
-import { retrieveUserActivities } from "../../Services/ActivityService";
+import {
+  retrieveUserActivities,
+  deleteActivity,
+} from "../../Services/ActivityService";
 import { UserAuth } from "../../Auth/AuthContext";
+
 const MyActivities = () => {
   const [allActivities, setAllActivities] = useState([]);
   const [filteredActivities, setFilteredActivities] = useState([]);
@@ -68,11 +72,19 @@ const MyActivities = () => {
         <FilterSection onFilterChange={handleFilterChange} />
         {filteredActivities.length > 0 ? (
           filteredActivities.map((activity, i) => (
-            <Activity key={i} activity={activity} />
+            <Activity
+              key={i}
+              activity={activity}
+              deleteActivity={deleteActivity}
+            />
           ))
         ) : allActivities ? (
           allActivities.map((activity, i) => (
-            <Activity key={i} activity={activity} />
+            <Activity
+              key={i}
+              activity={activity}
+              deleteActivity={deleteActivity}
+            />
           ))
         ) : (
           <div>Loading...</div>
