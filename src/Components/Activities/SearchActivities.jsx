@@ -91,40 +91,6 @@ const SearchActivities = () => {
               className="flex my-2 rounded-lg max-h-[250px]"
             />
           </div>
-          <div className="flex-row">
-            <h3 className="font-bold text-2xl mb-4">Meeting to code!</h3>
-            <div>
-              Come join us in an amazing coding session where you will learn how
-              to become the master zen of all coding languages!
-            </div>
-            <span className="justify-items-auto"></span>
-            <div className="mt-4">
-              <p className="font-bold">Event will take place at on: </p>
-              <div>27 March at 21:00</div>
-              <div className="mt-4">
-                <span className="font-bold">Location: </span>
-                <div>
-                  5th Floor, Centre City House, 5, 7 Hill St, Birmingham B5 4UA
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex-row relative">
-            <h3 className="font-bold text-2xl">Created by</h3>
-            <div className="h-20 w-20 m-auto">
-              <img src="../public/img/profile-picture.jpg" />
-            </div>
-            <p className="mb-2">Constantin Cristian Florea</p>
-            <p className="font-bold text-1xl">Time left until event starts:</p>
-            <p> 1 day, 22 hours</p>
-            <div className="font-bold">7/10 Attenders</div>
-            <button
-              type="submit"
-              className="right-0 text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Join
-            </button>
-          </div>
         </div>
       </div>
     </div>

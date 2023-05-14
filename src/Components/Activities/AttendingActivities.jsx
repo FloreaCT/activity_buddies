@@ -1,11 +1,13 @@
-import React from "react";
-
+// Define a component for rendering the attending activities page
 const AttendingActivities = () => {
   return (
+    // Render a container div with a flex layout and some styling
     <div className="flex flex-row space-x-4 m-auto basis-1/3 align-center justify-center">
+      {/* Render activity details */}
       <div className="w-screen border-2 text-center rounded-md pb-10">
         <h1 className="font-bold text-2xl my-2">Attending activities</h1>
         <hr className="w-[20%] h-1 mx-auto my-2 bg-green-100 border-0 rounded md:my-6 dark:bg-gray-700"></hr>
+
         <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 items-center">
           <div className="flex">
             <img
@@ -14,6 +16,7 @@ const AttendingActivities = () => {
               className="flex my-2 rounded-lg max-h-[250px]"
             />
           </div>
+
           <div className="flex-row">
             <h3 className="font-bold text-2xl my-4">Meeting to code!</h3>
             <div>
@@ -21,6 +24,7 @@ const AttendingActivities = () => {
               to become the master zen of all coding languages!
             </div>
             <span className="justify-items-auto"></span>
+
             <div className="mt-4">
               <p className="font-bold">Event will take place at on: </p>
               <div>27 March at 21:00</div>
@@ -32,6 +36,7 @@ const AttendingActivities = () => {
               </div>
             </div>
           </div>
+          {/* Render a button to withdraw from the activity */}
           <div className="flex-row">
             <button
               type="submit"

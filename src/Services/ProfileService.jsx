@@ -1,12 +1,14 @@
 import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../Config/firebase";
 
+// Define function to retrieve user profile data from Firestore
 export const retrieveProfile = async (uid) => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
   return docSnap;
 };
 
+// Define function to create a new user in Firestore
 export const createSyncedUser = async (userData, register, uid) => {
   const newUser = await setDoc(doc(db, "users", register ? uid : userData.id), {
     about: "Please write something amazing about you",
@@ -40,6 +42,7 @@ export const createSyncedUser = async (userData, register, uid) => {
   }
 };
 
+// Define function to verify if a user already exists in Firestore
 export const verifyExistingUser = async (uid) => {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
@@ -51,6 +54,7 @@ export const verifyExistingUser = async (uid) => {
   }
 };
 
+// Define function to update user profile data in Firestore
 export const updateProfile = async (newData) => {
   const uid = auth.currentUser.uid;
   const docRef = doc(db, "users", uid);

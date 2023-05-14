@@ -5,7 +5,9 @@ import ActivityHeader from "./Activities/ActivityHeader";
 import Buddies from "./Buddies/buddies";
 import Messages from "./Messages";
 
+//Rendering the main component
 const Main = () => {
+  //Render the routes for the application
   return (
     <div className="p-8 sm:ml-64">
       <Routes>

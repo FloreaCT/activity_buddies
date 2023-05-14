@@ -15,6 +15,7 @@ import {
 import { db, storageRef } from "../Config/firebase";
 import { deleteObject, ref } from "firebase/storage";
 
+//Exporting function to add a new activity
 export const addActivity = async (formData, dbUser) => {
   const modifiedActivitiy = {
     ...formData,
@@ -24,12 +25,13 @@ export const addActivity = async (formData, dbUser) => {
       id: `${dbUser.uid}`,
     },
   };
-
+  //Adding the activity to the database
   const newActivity = doc(collection(db, "activities"));
   const setActivity = await setDoc(newActivity, modifiedActivitiy);
   console.log("Activity has been saved to the database");
 };
 
+//Exporting function to retrieve all activities of the logged in user
 export const retrieveUserActivities = async (callback, user) => {
   const activitiesRef = collection(db, "activities");
   const userActivities = query(
@@ -57,8 +59,8 @@ export const retrieveUserActivities = async (callback, user) => {
   };
 };
 
+//Exporting function that updates an existing activity
 export const updateActivity = async (data, activityId) => {
-  console.log("data is: ", data);
   try {
     const activityRef = doc(db, "activities", activityId);
     await updateDoc(activityRef, data);
@@ -70,8 +72,8 @@ export const updateActivity = async (data, activityId) => {
 export const deleteActivity = async (activityId, imageUrl) => {
   // Delete the image file from Firebase Storage
   try {
+    //Getting the image file name from the firebase url
     const decodedUrl = decodeURIComponent(imageUrl);
-
     const filePath = decodedUrl
       .split(storageRef.storage.app.options.storageBucket)[1]
       .split("?")[0];
@@ -121,6 +123,7 @@ export const joinActivity = async (userId, activityId) => {
     });
 };
 
+// Check which activities an user is attending
 export const userAttendances = async () => {
   // Get a reference to the user document
   const userRef = doc(db, "users", userId);

@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react";
 import Modal from "../../Utils/Modal";
 import Activity from "./Activity";
 import Button from "../../Utils/Button";
-import FilterSection from "./FilterActivities";
 import {
   retrieveUserActivities,
   deleteActivity,
 } from "../../Services/ActivityService";
 import { UserAuth } from "../../Auth/AuthContext";
 
+// Rendering the user's activities page
 const MyActivities = () => {
+  // Define state variables for all activities and modal visibility
   const [allActivities, setAllActivities] = useState([]);
-  const [filteredActivities, setFilteredActivities] = useState([]);
   const [show, setShow] = useState(false);
+  // Get the current user using the UserAuth hook
   const { user } = UserAuth();
 
+  // Set the creator flag to false
   const creator = false;
+
+  // Use an effect hook to retrieve the user's activities from the database
   useEffect(() => {
     const handleActivitiesUpdate = (activities) => {
       setAllActivities(activities);
@@ -28,38 +32,15 @@ const MyActivities = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    setFilteredActivities(allActivities);
-  }, [allActivities]);
-
-  const handleFilterChange = (filter) => {
-    const filtered = allActivities.filter((activity) => {
-      const filterActivity = filter.activity.toLowerCase().trim();
-      const filterLocation = filter.location.toLowerCase().trim();
-      // const filterDate = filter.date.trim(); To be added later
-      const locationText = activity.location.toLowerCase();
-      // const dateText = activity.date; To be added later
-      const tagMatches = activity.tags.some((tag) => {
-        const tagText = tag.toLowerCase();
-        return tagText.slice(0, 3) === filterActivity.slice(0, 3);
-      });
-      const locationMatches =
-        filterLocation === "" ||
-        locationText.slice(0, 3) === filterLocation.slice(0, 3);
-      // const dateMatches = filterDate === "" || dateText === filterDate; //To be added later
-      return filterActivity === ""
-        ? locationMatches
-        : tagMatches && locationMatches;
-    });
-    setFilteredActivities(filtered);
-  };
-
+  // Define a function to handle closing the modal
   const handleModalClose = () => {
     setShow(false);
   };
 
+  // Render the user's activities page
   return (
     <div className="flex flex-row space-x-4 m-auto basis-1/3 align-center justify-center">
+      {/* Render Create activity button */}
       <div className="w-screen border-2 text-center rounded-md pb-10">
         <h1 className="font-bold text-2xl mb-10 mt-10">Your activities</h1>
         <Button
@@ -70,17 +51,8 @@ const MyActivities = () => {
           }
           onClick={() => setShow(true)}
         />
-        <FilterSection onFilterChange={handleFilterChange} />
-        {filteredActivities.length > 0 ? (
-          filteredActivities.map((activity, i) => (
-            <Activity
-              key={i}
-              activity={activity}
-              deleteActivity={deleteActivity}
-              creator={creator}
-            />
-          ))
-        ) : allActivities ? (
+        {/* Render user's activities */}
+        {allActivities ? (
           allActivities.map((activity, i) => (
             <Activity
               key={i}
@@ -92,6 +64,7 @@ const MyActivities = () => {
         ) : (
           <div>Loading...</div>
         )}
+        {/* Render the modal for creating/editing activities */}
         <Modal
           open={show}
           onClose={handleModalClose}
@@ -102,4 +75,6 @@ const MyActivities = () => {
     </div>
   );
 };
+
+// Export the MyActivities component
 export default MyActivities;

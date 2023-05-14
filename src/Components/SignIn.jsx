@@ -22,18 +22,23 @@ const autoFillStyle = css`
   }
 `;
 
+// Define the SignIn component
 const SignIn = () => {
+  // Define state variables for the email, password, error, and the current user
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [theUser, setTheUser] = useState(null);
 
+  // Define state variables for showing the modal and getting the signIn, googleSignIn, and user functions from the UserAuth context
   const [show, setShow] = useState(false);
   const { signIn, googleSignIn, user } = UserAuth();
+
+  // Determine whether to register a new user or not based on whether there is a current user
   const register = auth?.currentUser?.uid ? false : true;
 
+  // Initialize the Flowbite library and set the current user when the component mounts
   const navigate = useNavigate();
-
   useEffect(() => {
     if (theUser) {
       navigate("/");
@@ -44,13 +49,17 @@ const SignIn = () => {
     }
   }, [user]);
 
+  // Handle Google sign-in
   const handleGoogleSignIn = async () => {
     try {
+      // Sign in with Google using the googleSignIn function from the UserAuth context
       await googleSignIn();
+      // Check if the user already exists in the database using the verifyExistingUser function
       const verify = await verifyExistingUser(auth.currentUser.uid);
       if (verify) {
         navigate("/");
       } else {
+        // If the user does not exist, create a new user using the createSyncedUser function
         const names = auth.currentUser.displayName.split(" ");
         const lastName = names.pop();
         const firstName = names.join(" ");
@@ -71,10 +80,12 @@ const SignIn = () => {
     }
   };
 
+  // Handle login form submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
+      // Sign in with email and password using the signIn function from the UserAuth context
       await signIn(email, password);
       navigate("/");
     } catch (e) {
@@ -83,14 +94,17 @@ const SignIn = () => {
     }
   };
 
+  // Handle forgot password
   const handleForgotPassword = () => {
     return;
   };
 
+  // Handle closing the modal
   const handleModalClose = () => {
     setShow(false);
   };
 
+  // Render the SignIn component
   return (
     <section className={`${autoFillStyle} h-screen`}>
       {/* <!-- Main modal --> */}
@@ -210,7 +224,7 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-
+      {/* New user registration modal */}
       <Modal open={show} onClose={handleModalClose} register={register}></Modal>
     </section>
   );

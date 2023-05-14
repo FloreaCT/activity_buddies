@@ -14,11 +14,13 @@ const ImageService = ({
   disableButton,
   setIsDisabled,
 }) => {
+  // Define state variables for the file, image URL, metadata, and whether to hide the
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [metaData, setMetaData] = useState({});
   const [isHidden, setIsHidden] = useState(false);
 
+  // Handle selecting a file from Google Drive
   const handleGoogleFile = async (event) => {
     const file = event.target.files[0];
     setFile(file);
@@ -36,10 +38,12 @@ const ImageService = ({
     });
   };
 
+  // Show the image upload button when the component mounts
   useEffect(() => {
     setIsHidden(false);
   }, []);
 
+  // Generate a unique file name for the uploaded image
   const generateFileName = (file) => {
     const timestamp = Date.now();
     const randomNumber = Math.floor(Math.random() * 1000000);
@@ -49,6 +53,7 @@ const ImageService = ({
     return `${timestamp}-${randomNumber}.${extension}`;
   };
 
+  // Handle submitting the image to Firebase Storage
   const handleSubmit = async () => {
     const fileName = generateFileName(file);
     const fileRef = ref(storageRef, fileName);
@@ -59,7 +64,7 @@ const ImageService = ({
       ? handleImageUrl(downloadUrl)
       : console.log("Something went wrong");
   };
-
+  // Render the ImageService component
   return (
     <Fragment>
       <div className="flex m-auto items-center">
@@ -76,6 +81,7 @@ const ImageService = ({
           <img src={imageUrl} alt="Preview" className="h-[25vh] m-auto my-2" />
         )}
       </div>
+      {/*Button to handle the upload image*/}
       <div className="flex mt-2 m-auto">
         <Button
           type="button"

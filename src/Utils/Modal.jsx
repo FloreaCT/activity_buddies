@@ -5,6 +5,7 @@ import Form from "../Components/Form/Form";
 import RegisterForm from "../Components/Form/RegisterForm";
 import ActivityForm from "../Components/Form/ActivityForm";
 
+//Modal css
 const modalStyles = css`
   position: relative;
   display: inline-block;
@@ -14,7 +15,7 @@ const modalStyles = css`
   z-index: 1000;
   border-radius: 20px;
 `;
-
+//Overlay css
 const modalOverlay = css`
   position: fixed;
   z-index: 100;
@@ -28,6 +29,7 @@ const modalOverlay = css`
   overflow: auto;
 `;
 
+// Define the Modal component
 const Modal = ({
   open,
   onClose,
@@ -38,10 +40,11 @@ const Modal = ({
   activity,
   creator,
 }) => {
+  // If the modal is not open, return null
   if (!open) return null;
 
   let content;
-
+  // Render different forms based on the value of the register prop
   switch (register) {
     case true:
       content = (
@@ -81,7 +84,7 @@ const Modal = ({
     default:
       content = null;
   }
-
+  // Render the Modal component using React Portal
   return ReactDom.createPortal(
     <div className={modalOverlay}>
       <div className={modalStyles}>{content}</div>

@@ -8,9 +8,11 @@ const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
   const [show, setShow] = useState(false);
   const { user } = UserAuth();
 
+  // Close the modal
   const handleModalClose = () => {
     setShow(false);
   };
+  // Delete selected activity
   const deleteOneActivity = () => {
     deleteActivity(activity.id, activity.image);
   };
@@ -24,7 +26,9 @@ const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
   const minutes = Math.floor((timeUntilEvent / (1000 * 60)) % 60);
 
   return (
+    // Render activity container
     <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 py-4 my-2 justify-center align-center content-center items-center">
+      {/* Renders left part of the activity grid */}
       <div id="image" name="image" className="flex">
         <img
           src={activity.image}
@@ -32,7 +36,7 @@ const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
           className="flex my-2 rounded-lg max-h-[250px]"
         />
       </div>
-
+      {/* Renders middle part of the activity grid */}
       <div id="details" name="details" className="flex-row">
         <h3 className="font-bold text-2xl mb-4">{activity.title}</h3>
         <div id="eventInfo" name="eventInfo">
@@ -62,6 +66,7 @@ const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
           </div>
         </div>
       </div>
+      {/* Renders right side of the activity grid */}
       <div className="flex-row">
         {creator ? (
           <div className="flex-row relative">

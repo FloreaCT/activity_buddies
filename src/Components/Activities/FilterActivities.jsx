@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../../Utils/Button";
 
+// Define a component for filtering the activities
 function FilterSection({ onFilterChange }) {
   const [filter, setFilter] = useState({
     activity: "",
@@ -8,11 +9,13 @@ function FilterSection({ onFilterChange }) {
     location: "",
   });
 
+  //Function to handle the filter changes
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   };
 
+  //Function to apply the filter
   const handleApplyFilter = () => {
     onFilterChange(filter);
   };

@@ -6,6 +6,7 @@ import { auth } from "../../Config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import _ from "lodash";
 
+// CSS styles for the profile form
 const formStyles = css`
   form {
     display: flex;
@@ -55,11 +56,13 @@ const formStyles = css`
     background-color: #005fa6;
   }
 `;
-
+// The Profile component displays the user's profile information.
 const Profile = () => {
+  // Define state variables for showing the profile edit modal and whether the profile data is currently being loaded
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Define state variable for the user's profile information
   const [userProfile, setUserProfile] = useState({
     about: "",
     avatar: "",
@@ -86,14 +89,18 @@ const Profile = () => {
     uid: 0,
   });
 
+  // Use the useRef hook to store the previous user profile data and compare it to the new data to prevent unnecessary re-renders
   const prevUserProfileRef = useRef();
 
+  // Use the useEffect hook to retrieve the user's profile data when the component mounts or when the show state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
+          // Retrieve the user's profile data
           const oldProfile = await retrieveProfile(user.uid);
           const newProfile = oldProfile.data();
+          // If the retrieved profile data is different from the previous profile data, update the userProfile state
           if (!_.isEqual(prevUserProfileRef.current, newProfile)) {
             setUserProfile((userProfile) => ({
               ...userProfile,
@@ -110,15 +117,18 @@ const Profile = () => {
     return unsubscribe;
   }, [show]);
 
+  // Handle the submission of the profile edit form
   const handleSubmit = (e) => {
     e.preventDefault();
     setShow(false);
   };
 
+  // Handle closing the profile edit modal
   const handleModalClose = () => {
     setShow(false);
   };
 
+  // Render the Profile component
   return (
     <>
       {loading ? (

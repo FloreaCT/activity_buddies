@@ -12,6 +12,7 @@ const autoFillStyle = css`
     transition: background-color 5000s ease-in-out 0s;
   }
 `;
+//Render the form for editing a new user
 const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
   const [formValues, setFormValues] = useState({
     about: "",
@@ -40,6 +41,7 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
     attendances: [],
   });
 
+  // Initializing Flowbite
   useEffect(() => {
     initFlowbite();
     if (Object.keys(userProfile).length !== 0) {
@@ -47,6 +49,7 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
     }
   }, [userProfile]);
 
+  //Variable that stores the gender options
   const genderOptions = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
@@ -55,6 +58,7 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
     { value: "Other", label: "Other" },
   ];
 
+  //Handeling the form changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (
@@ -98,6 +102,7 @@ const Form = ({ onClose = { onClose }, userProfile = { userProfile } }) => {
     }
   };
 
+  //Handle the form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     updateProfile(formValues);

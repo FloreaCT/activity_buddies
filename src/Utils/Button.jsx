@@ -1,6 +1,7 @@
 import React from "react";
 import { css } from "@emotion/css";
 
+//A custom button
 const Button = ({
   text,
   onClick,

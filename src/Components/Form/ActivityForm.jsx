@@ -18,11 +18,13 @@ const autoFillStyle = css`
   }
 `;
 
+// Render the form for editing and adding an activity
 const ActivityForm = ({
   activity = {},
   onClose = { onClose },
   creator = { creator },
 }) => {
+  // Define state variables for activity form data and uploading an image
   const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState({
     title: activity.title || "",
@@ -39,16 +41,19 @@ const ActivityForm = ({
 
   const dateRef = useRef(null);
 
+  //Opening date input when pressing on the div input and not only on the icon
   const openDate = () => {
     dateRef.current.setFocus();
   };
 
+  //Function to handle form changes
   const handleChange = (event, name) => {
     if (name) {
       setFormData((prevFormData) => ({
         ...prevFormData,
         date: event,
       }));
+      //Adding tags to formData as an array
     } else if (event.target.name === "tags") {
       const tags = event.target.value.split(",");
       setFormData((prevFormData) => ({
@@ -64,6 +69,7 @@ const ActivityForm = ({
     }
   };
 
+  //Function to add the image url inside the formData
   const handleImageUrl = (imgUrl) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -71,10 +77,12 @@ const ActivityForm = ({
     }));
   };
 
+  //Function to disable the Create button when uploading an image
   const disableButton = (event) => {
     setIsUploading(event);
   };
 
+  //Function to handle the submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     let tags = formData.tags;
@@ -85,6 +93,7 @@ const ActivityForm = ({
       ...formData,
       tags: tags,
     };
+    //If activity.id exists, it means we are updating the activity, else we are creating a new activity
     activity.id
       ? updateActivity(updatedData, activity.id)
       : addActivity(formData, dbUser);
@@ -96,10 +105,12 @@ const ActivityForm = ({
       <h3 className="text-2xl text-center mb-10">
         {activity.id ? "Update the event" : "Create a new event"}
       </h3>
+      {/* Form for creating or edtiting an activity*/}
       <form
         onSubmit={handleSubmit}
         className={`${autoFillStyle} min-w-[400px] `}
       >
+        {/* Close button for the modal */}
         <button
           type="button"
           className="absolute top-3 right-2.5 text-black-400 bg-transparent hover:bg-black-200 hover:text-black-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-black-800 dark:hover:text-white"
@@ -231,6 +242,7 @@ const ActivityForm = ({
             />
           </div>
         </div>
+        {/*Rendering the component that handles the image upload */}
         <div className="flex">
           <div className="m-auto">
             <ImageService
@@ -240,6 +252,7 @@ const ActivityForm = ({
             />
           </div>
         </div>
+        {/* A button that gets disabled when uploading an image */}
         <div className="flex">
           <div className="m-auto">
             <Button

@@ -6,6 +6,7 @@ import SignIn from "./Components/Signin";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import "./index.css";
 
+//Define the App component
 const App = () => {
   return (
     <Router>

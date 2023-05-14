@@ -15,36 +15,50 @@ const autoFillStyle = css`
   }
 `;
 
+// Render the form for editing or creating a user
 const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
+  // Define state variables for a new user, form errors, and creating an user
   const [newUser, setNewUser] = useState(null);
   const [error, setError] = useState("");
   const { createUser, signIn } = UserAuth();
+  //Initializing useNavigate hook
   const navigate = useNavigate();
 
+  // Handeling new user registration submit
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
 
     const { email, password } = newUser;
 
     try {
+      // Create a new user using the createUser function from the UserAuth context
       const userResponse = await createUser(email, password);
       if (userResponse) {
+        // Create a user in the Firebase Storage that is synced with the authenticated user
         createSyncedUser(newUser, register, userResponse.user.uid);
+        // Send an email verification
         sendEmailVerification(userResponse.user);
+        // Sign in the user
         signIn(email, password);
+        // Navigate to the home page
         navigate("/");
       }
     } catch (e) {
+      // Display any errors that occur during user registration
       setError(e.message);
       console.log(e.message);
     }
   };
 
+  // Handle changes to the input fields
   const handleChange = (e) => {
+    // Create a new object
     const newInput = { ...newUser, [e.target.name]: e.target.value };
+    // Set the newUser state to this new object
     setNewUser(newInput);
   };
 
+  // Render the registration form
   return (
     <>
       <h3 className="text-2xl text-center mb-10">

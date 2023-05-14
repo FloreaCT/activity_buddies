@@ -2,13 +2,17 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { UserAuth } from "../Auth/AuthContext";
 
+//Rendering the navbar for the application
 const NavBar = () => {
   const { logout, user } = UserAuth();
+  //Initializing the useNavigate
   const navigate = useNavigate();
 
+  //Function to logout the user
   const handleLogOut = async () => {
     try {
       await logout();
+      //Navigating to signin page after logging out
       navigate("/signin");
     } catch (e) {
       console.log(e.message);
@@ -162,50 +166,6 @@ const NavBar = () => {
           </button>
         </div>
       </aside>
-
-      {/* <div className="p-4 sm:ml-64">
-          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <div className="flex justify-center items-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <img src={user?.photoURL} alt="avatar" className="pt-20"></img>
-              </p>
-            </div>
-            <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-              Welcome dear {user?.displayName}
-            </div>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-              <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                <p className="text-2xl text-gray-400 dark:text-gray-500">+</p>
-              </div>
-            </div>
-          </div>
-        </div> */}
     </section>
   );
 };
