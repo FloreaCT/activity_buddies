@@ -9,8 +9,8 @@ import {
   deleteDoc,
   updateDoc,
   getDocs,
-  FieldValue,
   increment,
+  writeBatch,
 } from "firebase/firestore";
 import { db, storageRef } from "../Config/firebase";
 import { deleteObject, ref } from "firebase/storage";
@@ -29,6 +29,25 @@ export const addActivity = async (formData, dbUser) => {
   const newActivity = doc(collection(db, "activities"));
   const setActivity = await setDoc(newActivity, modifiedActivitiy);
   console.log("Activity has been saved to the database");
+};
+
+export const retrieveAllActivities = async () => {
+  const activitiesRef = collection(db, "activities");
+  const activitiesSnapshot = await getDocs(activitiesRef);
+  const activities = activitiesSnapshot.docs.map((doc) => {
+    const { date, ...data } = doc.data();
+    // Converting the timestamp into day/month/year
+    const dateObj = date ? new Date(date.seconds * 1000) : null; // convert date to Date object
+    const day = dateObj.getDate();
+    const month = dateObj.toLocaleString("default", { month: "short" }); // add 1 because getMonth returns 0-based index
+    const year = dateObj.getFullYear();
+    return {
+      id: doc.id,
+      date: `${day} ${month} ${year}`,
+      ...data,
+    };
+  });
+  return activities;
 };
 
 //Exporting function to retrieve all activities of the logged in user
@@ -91,59 +110,82 @@ export const deleteActivity = async (activityId, imageUrl) => {
 };
 
 // Add user attendace
-export const joinActivity = async (userId, activityId) => {
-  console.log(userId);
+export const joinActivity = async (userId, activityId, setAllActivities) => {
   const userRef = doc(db, "users", userId);
 
-  // Get a reference to the attendances subcollection
-  const attendancesRef = collection(userRef, "attendances");
-
-  // Get a reference to the activity document for the attendance
+  // Get a reference to the activity document
   const activityRef = doc(db, "activities", activityId);
 
-  // Add the attendance to the attendances subcollection
-  setDoc(doc(attendancesRef, activityId), {
+  // Update the attendees field in the activity document
+  await updateDoc(activityRef, {
+    attendees: increment(1),
+  });
+
+  // Add the activity to the user's attendances subcollection
+  await setDoc(doc(userRef, "attendances", activityId), {
     activityRef: activityRef,
-  })
-    .then(() => {
-      console.log(activityRef);
-      // Update the attendeeIds field in the activity document
-      updateDoc(activityRef, {
-        attendees: increment(1),
-      })
-        .then(() => {
-          console.log("Attendee added to activity successfully!");
-        })
-        .catch((error) => {
-          console.error("Error adding attendee to activity: ", error);
-        });
-    })
-    .catch((error) => {
-      console.error("Error adding attendance: ", error);
-    });
+  });
+
+  // Retrieve all activities from Firestore and update the state variable
+  const updatedActivities = await retrieveAllActivities();
+  setAllActivities(updatedActivities);
 };
 
 // Check which activities an user is attending
-export const userAttendances = async () => {
-  // Get a reference to the user document
-  const userRef = doc(db, "users", userId);
+export const userAttendance = async (userId) => {
+  const subcollectionRef = collection(db, "users", userId, "attendances");
+  const subcollectionSnapshot = await getDocs(subcollectionRef);
+  const activityIds = subcollectionSnapshot.docs.map((doc) => doc.id);
+  const activityDocs = await Promise.all(
+    activityIds.map((activityId) => getDoc(doc(db, "activities", activityId)))
+  );
+  const activities = activityDocs.map((doc) => {
+    const { date, ...data } = doc.data();
+    // Converting the timestamp into day/month/year
+    const dateObj = date ? new Date(date.seconds * 1000) : null; // convert date to Date object
+    const day = dateObj.getDate();
+    const month = dateObj.toLocaleString("default", { month: "short" }); // add 1 because getMonth returns 0-based index
+    const year = dateObj.getFullYear();
+    return {
+      id: doc.id,
+      date: `${day} ${month} ${year}`,
+      ...data,
+    };
+  });
+  return activities;
+};
 
-  // Get a reference to the attendances subcollection
-  const attendancesRef = collection(userRef, "attendances");
+//Remove user from activity
 
-  // Query the attendances subcollection for the user document
-  try {
-    const querySnapshot = await getDocs(attendancesRef);
-    const activities = [];
-    querySnapshot.forEach((doc) => {
-      const activity = {
-        id: doc.id,
-        activityRef: doc.data().activityRef,
-      };
-      activities.push(activity);
-    });
-    console.log("Activities: ", activities);
-  } catch (error) {
-    console.error("Error getting activities: ", error);
-  }
+export const removeAttendance = async (userId, activityId) => {
+  // Get the user document and the activity document
+  const userDocRef = doc(db, "users", userId);
+  const activityDocRef = doc(db, "activities", activityId);
+  const [userDoc, activityDoc] = await Promise.all([
+    getDoc(userDocRef),
+    getDoc(activityDocRef),
+  ]);
+
+  // Query the attendances subcollection to get the attendance document ID for the given activity
+  const attendancesQuery = query(
+    collection(db, "users", userId, "attendances"),
+    where("activityRef", "==", activityDocRef)
+  );
+  const attendancesDocs = await getDocs(attendancesQuery);
+  const attendanceDoc = attendancesDocs.docs[0];
+
+  // Create a batched write to remove the attendance from the user document and decrement the number of attendees from the activity document
+  const batchedWrite = writeBatch(db);
+  batchedWrite.delete(attendanceDoc.ref);
+  batchedWrite.update(activityDocRef, {
+    attendees: activityDoc.data().attendees - 1,
+  });
+  batchedWrite.update(userDocRef, {
+    attendances: attendancesDocs.docs
+      .filter((doc) => doc.id !== attendanceDoc.id)
+      .map((doc) => doc.ref),
+  });
+
+  // Commit the batched write
+  await batchedWrite.commit();
 };

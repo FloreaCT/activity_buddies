@@ -3,7 +3,8 @@ import Profile from "./Profile/Profile";
 import { Route, Routes } from "react-router";
 import ActivityHeader from "./Activities/ActivityHeader";
 import Buddies from "./Buddies/buddies";
-import Messages from "./Messages";
+import HomeMessages from "./HomeMessages";
+import { ChatContextProvider } from "./Messages/ChatContext";
 
 //Rendering the main component
 const Main = () => {
@@ -15,7 +16,16 @@ const Main = () => {
         <Route path="/profile/*" element={<Profile />} />
         <Route path="/activities/*" element={<ActivityHeader />} />
         <Route path="/buddies/*" element={<Buddies />} />
-        <Route path="/Messages/*" element={<Messages />} />
+
+        <Route
+          path="/Messages/*"
+          element={
+            <ChatContextProvider>
+              <HomeMessages />
+            </ChatContextProvider>
+          }
+        />
+
         <Route path="*" element={<div>Nothing here to see</div>} />
       </Routes>
     </div>

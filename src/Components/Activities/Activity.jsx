@@ -1,20 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../Utils/Button";
 import Modal from "../../Utils/Modal";
-import { joinActivity } from "../../Services/ActivityService";
+import { joinActivity, removeAttendance } from "../../Services/ActivityService";
 import { UserAuth } from "../../Auth/AuthContext";
 
-const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
+const Activity = ({
+  activity,
+  isSearchPage,
+  deleteActivity,
+  creator,
+  setAllActivities,
+  attending,
+  handleWithdraw,
+}) => {
+  const [isAttending, setIsAttending] = useState(false);
+  const [attendingActivities, setAttendingActivities] = useState([]);
   const [show, setShow] = useState(false);
   const { user } = UserAuth();
+
+  useEffect(() => {
+    // Update the attendingActivities state when the component mounts and when the user state changes
+    if (user && user.attendances) {
+      setAttendingActivities(
+        user.attendances.map((attendance) => attendance.activityRef.id)
+      );
+    } else {
+      setAttendingActivities([]);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    // Update the isAttending state when the attendingActivities state changes
+    if (user && user.attendances) {
+      setIsAttending(attendingActivities.includes(activity.id));
+    }
+  }, [attendingActivities, activity.id, user]);
 
   // Close the modal
   const handleModalClose = () => {
     setShow(false);
   };
+
   // Delete selected activity
   const deleteOneActivity = () => {
     deleteActivity(activity.id, activity.image);
+  };
+
+  const handleJoinActivity = async () => {
+    try {
+      await joinActivity(user.uid, activity.id, setAllActivities);
+      console.log("Activity joined successfully!");
+    } catch (error) {
+      console.error("Error joining activity: ", error);
+    }
+  };
+
+  const handleWithdrawClick = () => {
+    handleWithdraw(activity.id);
   };
 
   // Calculating the time until the activity starts
@@ -87,7 +129,7 @@ const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
               {activity.attendees}/{activity.maxAttendees} Attenders
             </div>
             <Button
-              onClick={() => joinActivity(user.uid, activity.id)}
+              onClick={() => handleJoinActivity()}
               type="button"
               text="Join"
               buttonStyles="right-0 text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -108,6 +150,15 @@ const Activity = ({ activity, isSearchPage, deleteActivity, creator }) => {
               {days ? days + " days" : null}, {hours} hours, {minutes} minutes
             </p>
           </div>
+        ) : attending ? (
+          <Button
+            type={"button"}
+            text={"Withdraw from activity"}
+            onClick={() => handleWithdrawClick(user.uid, activity.id)}
+            buttonStyles={
+              "text-white mr-4 bg-red-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-4"
+            }
+          />
         ) : (
           <div className="flex-row">
             <div className="font-bold">

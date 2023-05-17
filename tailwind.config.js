@@ -5,7 +5,14 @@ export default {
     "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      flex: {
+        2: "2 2 0%",
+      },
+      backgroundImage: {
+        background: "url('/img/background')",
+      },
+    },
   },
   plugins: [require("flowbite/plugin")],
 };

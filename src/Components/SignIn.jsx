@@ -29,7 +29,6 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [theUser, setTheUser] = useState(null);
-
   // Define state variables for showing the modal and getting the signIn, googleSignIn, and user functions from the UserAuth context
   const [show, setShow] = useState(false);
   const { signIn, googleSignIn, user } = UserAuth();
@@ -68,14 +67,16 @@ const SignIn = () => {
           firstName: firstName,
           lastName: lastName,
           email: auth.currentUser.email,
-          avatar: auth.currentUser.photoURL,
+          photoURL: auth.currentUser.photoURL,
           phone: "Please set your phone number",
           university: "Please set your university",
         };
         createSyncedUser(newUser, register, auth.currentUser.uid);
+
         navigate("/");
       }
     } catch (e) {
+      setError(e.message);
       console.log(e.message);
     }
   };
@@ -172,7 +173,11 @@ const SignIn = () => {
                   Password
                 </label>
               </div>
-
+              {error && (
+                <div className="text-red-600 mb-3">
+                  <span>{error}</span>
+                </div>
+              )}
               <div className="mb-6 flex items-center justify-between">
                 {/* <!-- Remember me checkbox --> */}
                 <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">

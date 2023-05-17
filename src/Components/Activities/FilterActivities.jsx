@@ -11,6 +11,9 @@ function FilterSection({ onFilterChange }) {
 
   //Function to handle the filter changes
   const handleFilterChange = (e) => {
+    if (e.key === "Enter") {
+      handleApplyFilter(filter);
+    }
     const { name, value } = e.target;
     setFilter((prevFilter) => ({ ...prevFilter, [name]: value }));
   };
@@ -26,6 +29,7 @@ function FilterSection({ onFilterChange }) {
       <label>
         Activity:
         <input
+          onKeyDown={(e) => handleFilterChange(e)}
           type="text"
           name="activity"
           defaultValue={filter.category}
@@ -48,6 +52,7 @@ function FilterSection({ onFilterChange }) {
         <input
           type="text"
           name="location"
+          onKeyDown={(e) => handleFilterChange(e)}
           defaultValue={filter.location}
           className="rounded-2xl mx-1 py-1"
           onChange={(e) => handleFilterChange(e)}

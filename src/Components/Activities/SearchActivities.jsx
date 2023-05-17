@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-// import Modal from "../../Utils/Modal";
 import Activity from "./Activity";
-// import Button from "../../Utils/Button";
 import FilterSection from "./FilterActivities";
 import {
-  retrieveUserActivities,
+  retrieveAllActivities,
   deleteActivity,
 } from "../../Services/ActivityService";
 import { UserAuth } from "../../Auth/AuthContext";
@@ -14,18 +12,26 @@ const SearchActivities = () => {
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [isSearchPage, setIsSearchPage] = useState(false);
   const { user } = UserAuth();
-
   useEffect(() => {
-    const handleActivitiesUpdate = (activities) => {
+    const handleActivitiesUpdate = async () => {
+      const activities = await retrieveAllActivities();
       setAllActivities(activities);
     };
     if (user && user.uid) {
-      const unsubscribe = retrieveUserActivities(handleActivitiesUpdate, user);
+      const unsubscribe = handleActivitiesUpdate(retrieveAllActivities());
       return () => {
         unsubscribe;
       };
     }
   }, [user]);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const activities = await retrieveAllActivities();
+      setAllActivities(activities);
+    };
+    fetchActivities();
+  }, []);
 
   useEffect(() => {
     setFilteredActivities(allActivities);
@@ -68,30 +74,23 @@ const SearchActivities = () => {
               deleteActivity={deleteActivity}
               creator={true}
               isSearchPage={isSearchPage}
+              setAllActivities={setAllActivities}
             />
           ))
         ) : allActivities ? (
-          allActivities.map((activity, i) => (
-            <Activity
-              key={i}
-              activity={activity}
-              deleteActivity={deleteActivity}
-              creator={true}
-              isSearchPage={isSearchPage}
-            />
-          ))
+          console.log("From SearchActivities.jsx")
         ) : (
+          // allActivities.map((activity, i) => (
+          //   <Activity
+          //     key={i}
+          //     activity={activity}
+          //     deleteActivity={deleteActivity}
+          //     creator={true}
+          //     isSearchPage={isSearchPage}
+          //   />
+          // ))
           <div>Loading...</div>
         )}
-        <div className="grid grid-cols-3 gap-4 rounded border-[1px] px-2 mx-6 py-4 my-2 justify-center align-center content-center items-center">
-          <div className="flex">
-            <img
-              src="../public/img/activity.jpg"
-              alt="activity"
-              className="flex my-2 rounded-lg max-h-[250px]"
-            />
-          </div>
-        </div>
       </div>
     </div>
   );

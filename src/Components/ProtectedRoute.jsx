@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
 
   // If there is no user, redirect to the sign-in page
   if (!user) {
-    return;
+    return <Navigate to="/signin" replace />;
   }
 
   // If there is a user, render the children components

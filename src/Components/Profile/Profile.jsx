@@ -65,7 +65,7 @@ const Profile = () => {
   // Define state variable for the user's profile information
   const [userProfile, setUserProfile] = useState({
     about: "",
-    avatar: "",
+    photoURL: "",
     basicinfo: {
       birthday: "",
       firstName: "",
@@ -137,7 +137,7 @@ const Profile = () => {
         <div className="flex flex-row space-x-4">
           <div className="m-auto border-2 text-center rounded-md max-w-lg pb-10">
             <div className="h-20 w-20 m-auto">
-              <img src={userProfile.avatar} className="rounded-full mt-2" />
+              <img src={userProfile.photoURL} className="rounded-full mt-2" />
             </div>
             <div>
               {userProfile.basicinfo.firstName +
