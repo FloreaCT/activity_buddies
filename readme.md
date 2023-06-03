@@ -7,11 +7,11 @@ Activity Buddies is a single-page app that helps students stay active by connect
 
 ## Table of Contents
 
-[Installation](#installation)
-[Usage](#usage)
-[Features](#features)
-[Contributing](#contributing)
-[License](#license)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
@@ -25,7 +25,7 @@ Download and extract the repository and save it wherever you want on your comput
 
 <div style="page-break-after: always;"></div>
   
-    Then you need to open VS code and add drag and drop the folder you've just extracted to it
+Then you need to open VS code and add drag and drop the folder you've just extracted to it
 
 ### [How to add folder](public/documentation/drag_and_drop.png "How to add folder to VS code!")
 
@@ -64,31 +64,31 @@ Congratulations!
 
 You will need to either log in using Google or create an account and log in using the chosen email and password.
 
-[How to login!](public/documentation/login.png "How to login")
+![How to login!](public/documentation/login.png "How to login")
 
 ### 2. Edit your profile
 
 After you log in, you will be presented with the profile page. If this is the first time you logged in after creating the account, you will need to edit your profile so your details are up to date, and the algorithm can use your "Interest" to give you relevant activities.
 
-[How to edit your profile!](public/documentation/edit_profile.png "How to edit your profile")
+![How to edit your profile!](public/documentation/edit_profile.png "How to edit your profile")
 
 ### 3. Activity search
 
 Once you click the Activities page, you can filter the activities by interest/tags, date or location. From here you can see the details about the activities, as well as how many people will attend each activity. On this page you have the possibility to create your own activity and also check which activities you are currently attending.
 
-[Activity page!](public/documentation/activities.png "Activity page")
+![Activity page!](public/documentation/activities.png "Activity page")
 
 ### 4. Buddies
 
 The Buddies page lets you add and delete buddies
 
-[Buddies page!](public/documentation/buddies.png "Buddies page")
+![Buddies page!](public/documentation/buddies.png "Buddies page")
 
 ### 5. Messages
 
 Students can chat in real-time with each other. They can search for a buddy in the chat panel only if the user is added as a friend.
 
-[Messages page!](public/documentation/chat.png "Messages page")
+![Messages page!](public/documentation/chat.png "Messages page")
 
 ## Features
 
