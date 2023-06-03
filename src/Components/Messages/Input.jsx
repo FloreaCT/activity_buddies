@@ -10,6 +10,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
+
 const Input = () => {
   const [text, setText] = useState("");
 
@@ -41,6 +42,13 @@ const Input = () => {
     });
     setText("");
   };
+  const handleEnter = (e) => {
+    console.log(e.key);
+    if (e.key == "Enter") {
+      setText(e.target.value);
+      handleSend();
+    }
+  };
   return (
     <div className="flex flex-row h-12 bg-white gap-2">
       <input
@@ -48,10 +56,12 @@ const Input = () => {
         type="text"
         placeholder="Type something..."
         className="w-full text-black"
+        onKeyDown={(e) => handleEnter(e)}
         onChange={(e) => setText(e.target.value)}
       ></input>
       <div className="m-auto">
         <button
+          tabIndex={0}
           onClick={() => {
             handleSend();
           }}

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { css } from "@emotion/css";
 import { useNavigate } from "react-router";
 import { UserAuth } from "../../Auth/AuthContext";
 import { createSyncedUser } from "../../Services/ProfileService";
 import { sendEmailVerification } from "firebase/auth";
+import _ from "lodash";
 
 const autoFillStyle = css`
   input:-webkit-autofill,
@@ -18,8 +19,28 @@ const autoFillStyle = css`
 // Render the form for editing or creating a user
 const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
   // Define state variables for a new user, form errors, and creating an user
-  const [newUser, setNewUser] = useState(null);
-  const [error, setError] = useState("");
+  const [initialUser, setInitialUser] = useState({
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    firstName: "Please fill in name",
+    lastName: "",
+    phone: "",
+    university: "",
+  });
+  const [newUser, setNewUser] = useState({ ...initialUser });
+  const [errors, setErrors] = useState({
+    email: "Invalid email address",
+    password: "Password must be atleast 8 characters",
+    passwordConfirm: "Password do not match",
+    firstName: "First name is required",
+    lastName: "Last name is required",
+    phone: "Number ex: 0730 000 0000",
+    university: "University is required",
+    form: null,
+  });
+  const [submitted, setSubmitted] = useState(false);
+
   const { createUser, signIn } = UserAuth();
   //Initializing useNavigate hook
   const navigate = useNavigate();
@@ -28,8 +49,26 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
 
+    // Set submitted state to true
+    setSubmitted(true);
+    const emptyFields = Object.entries(newUser).filter(
+      ([key, value]) => !value
+    );
+    if (emptyFields.length > 0) {
+      const fieldNames = emptyFields.map(([key, value]) => key).join(", ");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        form: "Please fill in all the inputs",
+      }));
+      return;
+    }
+    console.log(errors);
+    // Check if there are any errors
+    const hasErrors = Object.values(errors).some((error) => error !== null);
+    if (hasErrors || _.isEqual(initialUser, newUser)) {
+      return;
+    }
     const { email, password } = newUser;
-
     try {
       // Create a new user using the createUser function from the UserAuth context
       const userResponse = await createUser(email, password);
@@ -45,20 +84,121 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
       }
     } catch (e) {
       // Display any errors that occur during user registration
-      setError(e.message);
-      console.log(e.message);
+      console.log("Firebase error:", e.message);
+      // Check for specific error codes
+      if (e.code === "auth/email-already-in-use") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          form: "Email already in use",
+        }));
+        return;
+      } else if (e.code === "auth/weak-password") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          form: "Choose a stronger password",
+        }));
+        return;
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          form: "Unrecognized firebase error, please contact an admin at admin@activity-buddies.web.app",
+        }));
+        return;
+      }
     }
   };
 
   // Handle changes to the input fields
-  const handleChange = (e) => {
+  const handleChange = (event) => {
     // Create a new object
-    const newInput = { ...newUser, [e.target.name]: e.target.value };
-    // Set the newUser state to this new object
-    setNewUser(newInput);
+
+    const { name, value } = event.target;
+    // Update newUser state
+    setNewUser((prevUser) => ({ ...prevUser, [name]: value }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      form: null,
+    }));
+    // Validate input and set error if invalid
+    switch (name) {
+      case "email":
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(value)) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: "Invalid email address",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, email: null }));
+        }
+        break;
+      case "password":
+        if (value.length < 8) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            password: "Minimum password length is 8",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, password: null }));
+        }
+        break;
+      case "passwordConfirm":
+        if (value !== newUser.password) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            passwordConfirm: "Passwords do not match",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, passwordConfirm: null }));
+        }
+        break;
+      case "firstName":
+        if (!value) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            firstName: "First name is required",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, firstName: null }));
+        }
+        break;
+      case "lastName":
+        if (!value) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            lastName: "Last name is required",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, lastName: null }));
+        }
+        break;
+      case "phone":
+        const phoneRegex = /^\d{11}$/;
+        if (!phoneRegex.test(value)) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            phone: "Number ex: 0730 000 0000",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, phone: null }));
+        }
+        break;
+      case "university":
+        if (!value) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            university: "University is required",
+          }));
+        } else {
+          setErrors((prevErrors) => ({ ...prevErrors, university: null }));
+        }
+        break;
+      default:
+        break;
+    }
   };
 
-  // Render the registration form
   return (
     <>
       <h3 className="text-2xl text-center mb-10">
@@ -67,6 +207,7 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
       <form
         className={`${autoFillStyle} min-w-[400px] `}
         onSubmit={(e) => handleRegisterSubmit(e)}
+        noValidate
       >
         <button
           type="button"
@@ -96,6 +237,8 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             onChange={(e) => handleChange(e)}
+            required
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
           />
           <label
             htmlFor="email"
@@ -103,6 +246,9 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
           >
             Email address
           </label>
+          {submitted && (errors.email || newUser.email === "") && (
+            <span className="text-red-500">{errors.email}</span>
+          )}
         </div>
         <div className="relative z-0 w-full mb-6 group">
           <input
@@ -116,26 +262,33 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
           />
           <label
             htmlFor="password"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 peer"
           >
             Password
           </label>
+          {submitted && (errors.password || newUser.password === "") && (
+            <span className="text-red-500">{errors.password}</span>
+          )}
         </div>
         <div className="relative z-0 w-full mb-6 group">
           <input
             type="password"
-            name="repeat_password"
-            id="repeat_password"
+            name="passwordConfirm"
+            id="passwordConfirm"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             onChange={(e) => handleChange(e)}
           />
+
           <label
-            htmlFor="repeat_password"
+            htmlFor="passwordConfirm"
             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
             Confirm password
           </label>
+          {submitted && errors.passwordConfirm && (
+            <span className="text-red-500">{errors.passwordConfirm}</span>
+          )}
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
@@ -153,6 +306,9 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
             >
               First name
             </label>
+            {submitted && errors.firstName && (
+              <span className="text-red-500">{errors.firstName}</span>
+            )}
           </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
@@ -169,13 +325,15 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
             >
               Last name
             </label>
+            {submitted && errors.lastName && (
+              <span className="text-red-500">{errors.lastName}</span>
+            )}
           </div>
         </div>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full mb-6 group">
             <input
               type="tel"
-              // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               name="phone"
               id="phone"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -188,6 +346,9 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
             >
               Phone number
             </label>
+            {submitted && errors.phone && (
+              <span className="text-red-500">{errors.phone}</span>
+            )}
           </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
@@ -199,14 +360,131 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
               onChange={(e) => handleChange(e)}
             />
             <label
-              htmlFor="company"
+              htmlFor="university"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               University
             </label>
+            {submitted && errors.university && (
+              <span className="text-red-500">{errors.university}</span>
+            )}
           </div>
         </div>
+        <div className="text-center">
+          {submitted && errors.form && (
+            <span className="text-red-500 ">{errors.form}</span>
+          )}
+        </div>
         <div className="grid">
+          <div className="flex justify-center mt-3 ml-4 p-1">
+            <ul>
+              <li className="flex items-center py-1">
+                <div
+                  className={`rounded-full p-1 fill-current ${
+                    newUser?.password === newUser?.passwordConfirm &&
+                    newUser?.password?.length > 0
+                      ? "bg-green-200 text-green-700"
+                      : "bg-red-200 text-red-700"
+                  }`}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      style={{
+                        display:
+                          newUser?.password === newUser?.passwordConfirm &&
+                          newUser?.password?.length > 0
+                            ? "block"
+                            : "none",
+                      }}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                    <path
+                      style={{
+                        display:
+                          newUser?.password !== newUser?.passwordConfirm ||
+                          newUser?.password?.length === 0
+                            ? "block"
+                            : "none",
+                      }}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span
+                  className={`font-medium text-sm ml-3 ${
+                    newUser?.password === newUser?.passwordConfirm &&
+                    newUser?.password?.length > 0
+                      ? "text-green-700"
+                      : "text-red-500"
+                  }`}
+                >
+                  {newUser?.password === newUser?.passwordConfirm &&
+                  newUser?.password?.length > 0
+                    ? "Passwords match"
+                    : "Passwords do not match"}
+                </span>
+              </li>
+              <li className="flex items-center m-auto py-1 mb-4">
+                <div
+                  className={`rounded-full p-1 fill-current ${
+                    newUser?.password?.length > 7
+                      ? "bg-green-200 text-green-700"
+                      : "bg-red-200 text-red-700"
+                  }`}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      style={{
+                        display:
+                          newUser?.password?.length > 7 ? "block" : "none",
+                      }}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                    <path
+                      style={{
+                        display:
+                          newUser?.password?.length < 7 ? "block" : "none",
+                      }}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <span
+                  className={`font-medium text-sm ml-3 ${
+                    newUser?.password?.length > 7
+                      ? "text-green-700"
+                      : "text-red-500"
+                  }`}
+                >
+                  {newUser?.password?.length > 7
+                    ? "The minimum length is reached"
+                    : "At least 8 characters required"}
+                </span>
+              </li>
+            </ul>
+          </div>
           <button
             type="submit"
             className="m-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

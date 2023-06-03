@@ -128,12 +128,16 @@ const Activity = ({
             <div className="font-bold">
               {activity.attendees}/{activity.maxAttendees} Attenders
             </div>
-            <Button
-              onClick={() => handleJoinActivity()}
-              type="button"
-              text="Join"
-              buttonStyles="right-0 text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            />
+            {activity.attendees == activity.maxAttendees ? (
+              <div>Max Attenders</div>
+            ) : (
+              <Button
+                onClick={() => handleJoinActivity()}
+                type="button"
+                text="Join"
+                buttonStyles="right-0 text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 mt-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              />
+            )}
           </div>
         ) : isSearchPage ? (
           <div className="flex-row relative">

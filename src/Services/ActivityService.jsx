@@ -116,7 +116,6 @@ export const joinActivity = async (userId, activityId, setAllActivities) => {
   // Get a reference to the activity document
   const activityRef = doc(db, "activities", activityId);
 
-  // Update the attendees field in the activity document
   await updateDoc(activityRef, {
     attendees: increment(1),
   });

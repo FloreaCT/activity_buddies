@@ -72,6 +72,7 @@ const ImageService = ({
         <input
           className={isHidden ? "hidden" : ""}
           type="file"
+          accept="image/*"
           id="fileInput"
           onChange={(e) => {
             handleGoogleFile(e);
