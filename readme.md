@@ -49,7 +49,7 @@ After that use the following command in order to clone the repository:
 
 You should have a new folder created like the one showed bellow
 
-![Navigate to the newly created folder](public/documentation/git_clone.PNG "Navigate to the newly created folder")
+![Navigate to the newly created folder](public/documentation/git_clone.png "Navigate to the newly created folder")
 
 Open the folder with VS Code and write the following the terminal:
 
