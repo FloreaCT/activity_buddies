@@ -4,6 +4,7 @@ import ReactDom from "react-dom";
 import Form from "../Components/Form/Form";
 import RegisterForm from "../Components/Form/RegisterForm";
 import ActivityForm from "../Components/Form/ActivityForm";
+import BuddyForm from "../Components/Form/BuddyForm";
 
 //Modal css
 const modalStyles = css`
@@ -42,7 +43,7 @@ const Modal = ({
 }) => {
   // If the modal is not open, return null
   if (!open) return null;
-
+  console.log(register);
   let content;
   // Render different forms based on the value of the register prop
   switch (register) {
@@ -80,6 +81,9 @@ const Modal = ({
           creator={creator}
         />
       );
+      break;
+    case "buddy":
+      content = <BuddyForm open={open} onClose={onClose} />;
       break;
     default:
       content = null;

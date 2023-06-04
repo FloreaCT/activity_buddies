@@ -27,11 +27,12 @@ function FilterSection({ onFilterChange }) {
     <div>
       <h2 className="text-lg text-bold">Filter Activities</h2>
       <label>
-        Activity:
+        Tags:
         <input
           onKeyDown={(e) => handleFilterChange(e)}
           type="text"
           name="activity"
+          placeholder="Ex: Biking, running..."
           defaultValue={filter.category}
           className="rounded-2xl mx-1 py-1"
           onChange={(e) => handleFilterChange(e)}

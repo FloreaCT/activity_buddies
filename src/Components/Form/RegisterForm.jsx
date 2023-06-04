@@ -123,7 +123,7 @@ const RegisterForm = ({ onClose = { onClose }, register = { register } }) => {
     // Validate input and set error if invalid
     switch (name) {
       case "email":
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
         if (!emailRegex.test(value)) {
           setErrors((prevErrors) => ({
             ...prevErrors,

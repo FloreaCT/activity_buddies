@@ -1,7 +1,8 @@
 # Welcome to Activity Buddies
 
-Student: 10148467
-Live: [Live application](https://activity-buddies.web.app "Activity Buddies")
+| Student: | 10148467                                                                |
+| -------- | ----------------------------------------------------------------------- |
+| Live:    | [Live application](https://activity-buddies.web.app "Activity Buddies") |
 
 Activity Buddies is a single-page app that helps students stay active by connecting them with others with similar interests and activities. The app allows users to create profiles, search for other users with similar interests, and create or join events based on their interests. Overall, Activity Buddies is an excellent tool for students looking to stay active and connect with others who share their passions.
 
@@ -21,13 +22,13 @@ There are two ways of installing the projects:
 
 Download and extract the repository and save it wherever you want on your computer.
 
-### [How to download the repository!](public/documentation/download.png "How to download the repository")
+### ![How to download the repository!](public/documentation/download.png "How to download the repository")
 
 <div style="page-break-after: always;"></div>
   
-Then you need to open VS code and add drag and drop the folder you've just extracted to it
+Then you need to open VS code and add drag and drop the folder you've just extracted to it.
 
-### [How to add folder](public/documentation/drag_and_drop.png "How to add folder to VS code!")
+### ![How to add folder](public/documentation/drag_and_drop.png "How to add folder to VS code!")
 
 In the VS terminal you will need to write in the exact order:
 
@@ -141,8 +142,6 @@ If you have any questions or need help, you can reach out to me at [1florc83@sol
 **Cloud Functions for Firebase**: A serverless platform for building backend services in a Firebase application.
 
 **react-icons**: A library for adding icons to React components.
-
-**react-toastify**: A library for displaying notifications in a React application.
 
 **react-modal**: A library for creating modals in a React application.
 
