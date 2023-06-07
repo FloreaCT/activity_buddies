@@ -14,7 +14,7 @@ const Message = ({ text }) => {
 
   useEffect(() => {
     setDate(new Date(text.date.seconds * 1000).toLocaleString().split(","));
-    console.log(date);
+
   }, []);
 
   return (

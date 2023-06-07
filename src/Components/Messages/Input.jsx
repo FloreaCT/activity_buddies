@@ -18,7 +18,7 @@ const Input = () => {
   const { data } = useContext(ChatContext);
 
   const handleSend = async () => {
-    console.log(data);
+
     await updateDoc(doc(db, "chats", data.chatId), {
       messages: arrayUnion({
         id: uuid(),
@@ -43,7 +43,7 @@ const Input = () => {
     setText("");
   };
   const handleEnter = (e) => {
-    console.log(e.key);
+
     if (e.key == "Enter") {
       setText(e.target.value);
       handleSend();
@@ -65,7 +65,7 @@ const Input = () => {
           onClick={() => {
             handleSend();
           }}
-          className="bg-blue-400 p-2 mr-2 rounded-md text-gray-100"
+          className="bg-blue-700 p-2 mr-2 rounded-md text-gray-100"
         >
           Send
         </button>

@@ -77,9 +77,7 @@ const SearchActivities = () => {
               setAllActivities={setAllActivities}
             />
           ))
-        ) : allActivities ? (
-          console.log("From SearchActivities.jsx")
-        ) : (
+        ) : allActivities ? null : (
           // allActivities.map((activity, i) => (
           //   <Activity
           //     key={i}

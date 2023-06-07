@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+build
 For-later.html
 
 # Editor directories and files

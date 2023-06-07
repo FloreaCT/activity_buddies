@@ -12,7 +12,7 @@ export const retrieveProfile = async (uid) => {
 export const createSyncedUser = async (userData, register, uid) => {
   const newUser = await setDoc(doc(db, "users", register ? uid : userData.id), {
     about: "Please write something amazing about you",
-    photoURL: register ? "/img/profile-picture.jpg" : userData.photoURL,
+    photoURL: register ? userData.photoURL : "/img/profile-picture.jpg",
     basicinfo: {
       birthday: "Please set your birthday",
       firstName: userData.firstName,
@@ -36,6 +36,7 @@ export const createSyncedUser = async (userData, register, uid) => {
     uid: register ? uid : userData.id,
   });
   // Creating new user chat collection
+
   const newUserChat = await setDoc(
     doc(db, "userChats", register ? uid : userData.id),
     {}

@@ -24,7 +24,6 @@ const Search = () => {
   };
 
   const handleSelect = async (user) => {
-    console.log(user);
     const chats = handleChats(user);
     dispatch({ type: "CHANGE_USER", payload: user });
     setUser(null);

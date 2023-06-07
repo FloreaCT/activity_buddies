@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { UserAuth } from "../../Auth/AuthContext";
-import { getAuth, signInAnonymously, updateProfile } from "firebase/auth";
+import { signInAnonymously, updateProfile } from "firebase/auth";
 import { auth } from "../../Config/firebase";
+
 const Navbar = () => {
   const { user } = UserAuth();
 
   const loginAndUpdate = async () => {
     // You need to pass the authentication instance as param
-    let { abc } = await signInAnonymously(auth);
+    let { currentUser } = await signInAnonymously(auth);
 
     // Passing user's object as first param and updating it
-    await updateProfile(abc, {
+    await updateProfile(currentUser, {
       photoURL: "/img/profile-picture.jpg",
     });
   };

@@ -20,7 +20,7 @@ export const addActivity = async (formData, dbUser) => {
   const modifiedActivitiy = {
     ...formData,
     creator: {
-      profileImage: dbUser.avatar,
+      profileImage: dbUser.photoURL,
       name: dbUser.basicinfo.firstName + " " + dbUser.basicinfo.lastName,
       id: `${dbUser.uid}`,
     },
@@ -57,6 +57,7 @@ export const retrieveUserActivities = async (callback, user) => {
     activitiesRef,
     where("creator.id", "==", user.uid)
   );
+
   const unsubscribe = onSnapshot(userActivities, (snapshot) => {
     const allActivities = snapshot.docs.map((doc) => {
       const { date, ...data } = doc.data();
@@ -135,9 +136,11 @@ export const userAttendance = async (userId) => {
   const subcollectionRef = collection(db, "users", userId, "attendances");
   const subcollectionSnapshot = await getDocs(subcollectionRef);
   const activityIds = subcollectionSnapshot.docs.map((doc) => doc.id);
+
   const activityDocs = await Promise.all(
     activityIds.map((activityId) => getDoc(doc(db, "activities", activityId)))
   );
+
   const activities = activityDocs.map((doc) => {
     const { date, ...data } = doc.data();
     // Converting the timestamp into day/month/year

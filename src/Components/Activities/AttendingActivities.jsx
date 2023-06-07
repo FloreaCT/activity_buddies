@@ -16,11 +16,9 @@ const AttendingActivities = () => {
       setActivities(items);
     };
     if (user && user.uid) {
-      const unsubscribe = () => {
-        fetchItems();
-      };
+      const unsubscribe = fetchItems();
       return () => {
-        unsubscribe();
+        unsubscribe;
       };
     }
   }, [user]);

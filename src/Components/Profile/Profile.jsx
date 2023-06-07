@@ -94,7 +94,6 @@ const Profile = () => {
 
   // Use the useEffect hook to retrieve the user's profile data when the component mounts or when the show state changes
   useEffect(() => {
-    console.log(userProfile);
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {

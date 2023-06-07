@@ -12,4 +12,7 @@ export default defineConfig({
       PUBLIC_URL: "/activity_buddies",
     },
   },
+  build: {
+    outDir: "./build",
+  },
 });

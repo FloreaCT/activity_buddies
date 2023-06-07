@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import { NavLink, Route, Routes, useLocation } from "react-router-dom";
 import SearchActivities from "./SearchActivities";
 import AttendingActivities from "./AttendingActivities";

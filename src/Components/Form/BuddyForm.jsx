@@ -2,15 +2,12 @@ import React, { useState } from "react";
 
 import Button from "../../Utils/Button";
 import { searchBuddy, sendBuddyRequest } from "../../Services/BuddieService";
-import { UserAuth } from "../../Auth/AuthContext";
 
-const BuddyForm = ({ onClose }) => {
+const BuddyForm = ({ onClose, userData }) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [buddy, setBuddy] = useState("");
-
-  const { user } = UserAuth();
 
   const handleBuddy = async () => {
     const foundBuddy = await searchBuddy(email);
@@ -42,8 +39,8 @@ const BuddyForm = ({ onClose }) => {
 
   const handleBuddyRequest = async () => {
     const sender = {
-      uid: user.uid,
-      name: user.displayName,
+      uid: userData.uid,
+      name: userData.displayName,
     };
 
     const succes = await sendBuddyRequest(buddy, sender);

@@ -43,7 +43,7 @@ const Modal = ({
 }) => {
   // If the modal is not open, return null
   if (!open) return null;
-  console.log(register);
+
   let content;
   // Render different forms based on the value of the register prop
   switch (register) {
@@ -83,7 +83,7 @@ const Modal = ({
       );
       break;
     case "buddy":
-      content = <BuddyForm open={open} onClose={onClose} />;
+      content = <BuddyForm open={open} onClose={onClose} userData={userData} />;
       break;
     default:
       content = null;
